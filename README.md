@@ -92,7 +92,11 @@ From App Expectations
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+Property Name | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11
+--- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+Type | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
+--- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+Description | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
