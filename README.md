@@ -92,11 +92,11 @@ From App Expectations
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-Property Name | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11
---- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-Type | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
---- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-Description | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
+Property Name | Movie List | Movie | User 
+--- | --- | --- | --- 
+Type | Class | Class | Class
+--- | --- | --- | --- 
+Description | Movie list has a list of the movies within it, a list of recommended movies based off of the list of movies, and a pointer to the creater of the list | Movie has a string for description, a string for title, strings for url for movie trailer and poster, and an int for the public rating of the movie | User has a String for their username, string for their name, Image for their profile photo, list of all their friends, and list of all their movie lists
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
