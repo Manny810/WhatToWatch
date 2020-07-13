@@ -1,4 +1,4 @@
-package com.example.instagramclone;
+package com.example.whattowatch;
 
 import org.junit.Test;
 
