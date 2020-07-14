@@ -32,7 +32,7 @@ public class MovieList extends ParseObject {
     public void setTitle(String title){
         put(KEY_TITLE, title);
     }
-    
+
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
