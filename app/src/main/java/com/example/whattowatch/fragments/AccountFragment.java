@@ -9,16 +9,21 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.whattowatch.R;
+import com.parse.ParseUser;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AccountFragment#newInstance} factory method to
+ *
  * create an instance of this fragment.
  */
 public class AccountFragment extends Fragment {
     public static final String TAG = "AccountFragment";
+    private EditText etUsername;
+    private ImageView ivProfilePhoto;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -35,5 +40,13 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ParseUser user = ParseUser.getCurrentUser();
+
+        etUsername = view.findViewById(R.id.etUsername);
+        ivProfilePhoto = view.findViewById(R.id.ivProfilePhoto);
+
+        etUsername.setText(user.getUsername());
+
+
     }
 }
