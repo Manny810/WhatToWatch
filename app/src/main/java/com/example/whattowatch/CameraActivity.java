@@ -120,6 +120,29 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void saveUserPhoto(ParseUser currentUser, File photoFile) {
-        currentUser.add("profilePhoto", photoFile);
+        ParseFile parseFile = new ParseFile(photoFile);
+        parseFile.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Error while saving the file", e);
+                    Toast.makeText(CameraActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+        currentUser.add("profilePhoto", parseFile);
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Error while saving", e);
+                    Toast.makeText(CameraActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Post save was successful!");
+                ivPostImage.setImageResource(0);
+            }
+        });
+
     }
 }
