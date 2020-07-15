@@ -27,4 +27,16 @@
         android:layout_toEndOf="@+id/ivProfilePhoto"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="username" />
+
+    <Button
+        android:id="@+id/btnSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUsername"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ivProfilePhoto"
+        android:backgroundTint="#4E48FB"
+        android:text="Sign Out"
+        android:textColor="#F6F5F5" />
 </RelativeLayout>

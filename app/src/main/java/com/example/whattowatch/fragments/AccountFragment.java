@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.whattowatch.CameraActivity;
+import com.example.whattowatch.LoginActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.User;
 import com.parse.ParseFile;
@@ -42,6 +44,7 @@ public class AccountFragment extends Fragment {
     public static final String TAG = "AccountFragment";
     private TextView tvUsername;
     private ImageView ivProfilePhoto;
+    private Button btnSignOut;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -63,6 +66,7 @@ public class AccountFragment extends Fragment {
 
         tvUsername = view.findViewById(R.id.tvUsername);
         ivProfilePhoto = view.findViewById(R.id.ivProfilePhoto);
+        btnSignOut = view.findViewById(R.id.btnSignOut);
 
         tvUsername.setText(user.getUsername());
         ParseFile photo = user.getParseFile("profilePhoto");
@@ -79,6 +83,17 @@ public class AccountFragment extends Fragment {
                 Intent cameraIntent = new Intent(getContext(), CameraActivity.class);
                 startActivity(cameraIntent);
 
+            }
+        });
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                //getActivity().startService(intent);
+                getActivity().finish();
             }
         });
 
