@@ -2,6 +2,9 @@ package com.example.whattowatch;
 
 import android.app.Application;
 
+import com.example.whattowatch.models.Movie;
+import com.example.whattowatch.models.MovieList;
+import com.example.whattowatch.models.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -11,7 +14,9 @@ public class ParseApplication extends Application {
         super.onCreate();
 
         // Register your parse models
-        //ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(MovieList.class);
+        ParseObject.registerSubclass(Movie.class);
+        ParseObject.registerSubclass(User.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured

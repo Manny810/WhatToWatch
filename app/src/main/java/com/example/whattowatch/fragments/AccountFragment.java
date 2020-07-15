@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.whattowatch.CameraActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.User;
 import com.parse.ParseFile;
@@ -72,6 +73,14 @@ public class AccountFragment extends Fragment {
         else{
             Log.d(TAG, "Profile photo not provided");
         }
+        ivProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cameraIntent = new Intent(getContext(), CameraActivity.class);
+                startActivity(cameraIntent);
+
+            }
+        });
 
     }
 

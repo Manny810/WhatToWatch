@@ -15,7 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.File;
 
@@ -46,6 +52,17 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (photoFile == null || ivPostImage.getDrawable() == null){
+                    Toast.makeText(CameraActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                saveUserPhoto(ParseUser.getCurrentUser(), photoFile);
+                finish();
+            }
+        });
 
     }
 
@@ -58,7 +75,7 @@ public class CameraActivity extends AppCompatActivity {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(CameraActivity.this, "com.whattowatch.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -100,5 +117,9 @@ public class CameraActivity extends AppCompatActivity {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void saveUserPhoto(ParseUser currentUser, File photoFile) {
+        currentUser.add("profilePhoto", photoFile);
     }
 }
