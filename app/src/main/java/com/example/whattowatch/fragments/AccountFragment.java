@@ -28,6 +28,7 @@ public class AccountFragment extends Fragment {
     public AccountFragment() {
         // Required empty public constructor
     }
+    
 
 
     @Override
@@ -45,7 +46,6 @@ public class AccountFragment extends Fragment {
         etUsername = view.findViewById(R.id.etUsername);
         ivProfilePhoto = view.findViewById(R.id.ivProfilePhoto);
 
-        etUsername.setText(user.getUsername());
 
 
     }
