@@ -72,7 +72,8 @@ public class AccountFragment extends Fragment {
         ParseFile photo = user.getParseFile("profilePhoto");
         if (photo != null){
             Log.d(TAG, "loading profile Photo");
-            Glide.with(getContext()).load(photo).into(ivProfilePhoto);
+            Glide.with(getContext()).load(photo.getUrl()).into(ivProfilePhoto);
+
         }
         else{
             Log.d(TAG, "Profile photo not provided");

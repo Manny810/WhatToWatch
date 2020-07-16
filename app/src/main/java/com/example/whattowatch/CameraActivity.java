@@ -131,7 +131,7 @@ public class CameraActivity extends AppCompatActivity {
                 }
             }
         });
-        currentUser.add("profilePhoto", parseFile);
+        currentUser.put("profilePhoto", parseFile);
         currentUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
