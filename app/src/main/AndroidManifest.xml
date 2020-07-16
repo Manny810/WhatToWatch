@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".NewMovieListActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -31,9 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".CameraActivity"></activity>
-
+        <activity android:name=".MainActivity" />
+        <activity android:name=".CameraActivity" />
     </application>
 
 </manifest>
