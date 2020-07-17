@@ -59,6 +59,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         }
 
         public void bind(Movie movie) {
+            
         }
     }
 }

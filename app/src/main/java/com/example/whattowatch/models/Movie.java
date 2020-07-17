@@ -32,11 +32,11 @@ public class Movie extends ParseObject {
 
     public static Movie fromJsonObject(JSONObject movie) throws JSONException {
         Movie new_movie = new Movie();
-        new_movie.setDescription(movie.getString(KEY_DESCRIPTION));
-        new_movie.setTitle(movie.getString(KEY_TITLE));
-        new_movie.setPosterPath(movie.getString(KEY_POSTER_PATH));
-        new_movie.setBackdropPath(movie.getString(KEY_BACKDROP_PATH));
-        new_movie.setID(movie.getInt(KEY_ID));
+        new_movie.setDescription(movie.getString("overview"));
+        new_movie.setTitle(movie.getString("title"));
+        new_movie.setPosterPath(movie.getString("poster_path"));
+        new_movie.setBackdropPath(movie.getString("backdrop_path"));
+        new_movie.setID(movie.getInt("id"));
 
         return new_movie;
     }
