@@ -45,6 +45,7 @@ public class AccountFragment extends Fragment {
     private TextView tvUsername;
     private ImageView ivProfilePhoto;
     private Button btnSignOut;
+    public static final String USER_KEY_PROFILE_PHOTO = "profilePhoto";
 
     public AccountFragment() {
         // Required empty public constructor
@@ -69,7 +70,7 @@ public class AccountFragment extends Fragment {
         btnSignOut = view.findViewById(R.id.btnSignOut);
 
         tvUsername.setText(user.getUsername());
-        ParseFile photo = user.getParseFile("profilePhoto");
+        ParseFile photo = user.getParseFile(USER_KEY_PROFILE_PHOTO);
         if (photo != null){
             Log.d(TAG, "loading profile Photo");
             Glide.with(getContext()).load(photo.getUrl()).into(ivProfilePhoto);

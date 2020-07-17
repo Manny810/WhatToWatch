@@ -28,6 +28,8 @@ import java.io.File;
 public class CameraActivity extends AppCompatActivity {
     public static final String TAG = "CameraActivity";
 
+    public static final String USER_KEY_PROFILE_PHOTO = "profilePhoto";
+
     Button btnCaptureImage;
     ImageView ivPostImage;
     Button btnSubmit;
@@ -131,7 +133,7 @@ public class CameraActivity extends AppCompatActivity {
                 }
             }
         });
-        currentUser.put("profilePhoto", parseFile);
+        currentUser.put(USER_KEY_PROFILE_PHOTO, parseFile);
         currentUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
