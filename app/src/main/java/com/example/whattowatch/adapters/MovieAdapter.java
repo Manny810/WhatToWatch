@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 
@@ -59,7 +60,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         }
 
         public void bind(Movie movie) {
-            
+            tvTitle.setText(movie.getTitle());
+            tvOverview.setText(movie.getDescription());
+            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
         }
     }
 }
