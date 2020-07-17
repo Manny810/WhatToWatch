@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".NewMovieListActivity"></activity>
+        <activity android:name=".FindMovieActivity"></activity>
+        <activity android:name=".NewMovieListActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
