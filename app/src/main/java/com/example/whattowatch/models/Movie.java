@@ -57,17 +57,13 @@ public class Movie extends ParseObject {
         put(KEY_TITLE, title);
     }
 
-    public String getPosterPath(){
-        return getString(KEY_POSTER_PATH);
-    }
+    public String getPosterPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_POSTER_PATH)); }
 
     public void setPosterPath(String posterPath){
         put(KEY_POSTER_PATH, posterPath);
     }
 
-    public String getBackdropPath(){
-        return getString(KEY_BACKDROP_PATH);
-    }
+    public String getBackdropPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_BACKDROP_PATH)); }
 
     public void setBackdropPath(String backdropPath){
         put(KEY_BACKDROP_PATH, backdropPath);
