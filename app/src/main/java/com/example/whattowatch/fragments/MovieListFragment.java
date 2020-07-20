@@ -79,12 +79,15 @@ public class MovieListFragment extends Fragment {
         // Set a layout Manager on the recycler view
         rvMovieLists.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        queryLists();
+
     }
 
     protected void queryLists() {
         // Specify which class to query
         ParseQuery<MovieList> query = ParseQuery.getQuery(MovieList.class);
         query.include(MovieList.KEY_USER);
+        query.whereEqualTo(MovieList.KEY_USER, ParseUser.getCurrentUser());
         query.addDescendingOrder(MovieList.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<MovieList>() {
             @Override
