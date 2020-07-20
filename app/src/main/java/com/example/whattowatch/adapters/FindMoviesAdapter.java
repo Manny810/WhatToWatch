@@ -26,7 +26,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.ViewHolder>{
-    public static final String TAG = "MovieAdapter";
+    public static final String TAG = "FindMoviesAdapter";
 
     private Context context;
     private List<Movie> movies;
@@ -66,6 +66,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            itemView.setOnClickListener(this); 
         }
 
         public void bind(Movie movie) {
@@ -79,7 +80,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
         public void onClick(View view) {
             // get the item position
             int position = getAdapterPosition();
-
+            Log.d(TAG, "Clicked on position " + position);
             // makes sure position is valid
             if (position != RecyclerView.NO_POSITION){
                 // TODO send the movie in position back to newMovieListActivity
