@@ -3,6 +3,15 @@ package com.example.whattowatch.models;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @ParseClassName("Movie")
 public class Movie extends ParseObject {
 
@@ -11,6 +20,36 @@ public class Movie extends ParseObject {
     public static final String KEY_POSTER_PATH = "posterPath";
     public static final String KEY_BACKDROP_PATH = "backdropPath";
     public static final String KEY_ID = "id";
+
+    public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
+        List<Movie> movies = new ArrayList<>();
+
+        for (int i = 0; i < movieJsonArray.length(); i++){
+            movies.add(fromJsonObject(movieJsonArray.getJSONObject(i)));
+        }
+        return movies;
+    }
+
+    public static Movie fromJsonObject(JSONObject movie) throws JSONException {
+        Movie new_movie = new Movie();
+        new_movie.setDescription(movie.getString("overview"));
+        new_movie.setTitle(movie.getString("title"));
+        new_movie.setPosterPath(movie.getString("poster_path"));
+        new_movie.setBackdropPath(movie.getString("backdrop_path"));
+        new_movie.setID(movie.getInt("id"));
+
+        return new_movie;
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(KEY_DESCRIPTION, getDescription());
+        json.put(KEY_TITLE, getTitle());
+        json.put(KEY_POSTER_PATH, getPosterPath());
+        json.put(KEY_BACKDROP_PATH, getBackdropPath());
+        json.put(KEY_ID, getID());
+        return json;
+    }
 
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
@@ -28,17 +67,13 @@ public class Movie extends ParseObject {
         put(KEY_TITLE, title);
     }
 
-    public String getPosterPath(){
-        return getString(KEY_POSTER_PATH);
-    }
+    public String getPosterPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_POSTER_PATH)); }
 
     public void setPosterPath(String posterPath){
         put(KEY_POSTER_PATH, posterPath);
     }
 
-    public String getBackdropPath(){
-        return getString(KEY_BACKDROP_PATH);
-    }
+    public String getBackdropPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_BACKDROP_PATH)); }
 
     public void setBackdropPath(String backdropPath){
         put(KEY_BACKDROP_PATH, backdropPath);

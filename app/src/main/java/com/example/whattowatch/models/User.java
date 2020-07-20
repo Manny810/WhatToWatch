@@ -2,12 +2,12 @@ package com.example.whattowatch.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 
 @ParseClassName("User")
-public class User extends ParseObject {
+public class User extends ParseUser {
     public static final String KEY_MOVIE_LISTS = "movieLists";
     public static final String KEY_PROFILE_PHOTO = "profilePhoto";
 

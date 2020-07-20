@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.whattowatch.fragments.AccountFragment;
+import com.example.whattowatch.fragments.MovieListFragment;
+import com.example.whattowatch.fragments.RecommenderFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (menuItem.getItemId()) {
                     case R.id.action_lists:
-                        fragment = new AccountFragment();
+                        fragment = new MovieListFragment();
                         break;
                     case R.id.action_recommendations:
-                        fragment = new AccountFragment();
+                        fragment = new RecommenderFragment();
                         break;
                     case R.id.action_account:
                     default:

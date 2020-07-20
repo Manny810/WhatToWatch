@@ -6,8 +6,10 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.lang.reflect.Array;
+import java.util.List;
 
 @ParseClassName("MovieList")
 public class MovieList extends ParseObject {
@@ -16,6 +18,18 @@ public class MovieList extends ParseObject {
     public static final String KEY_TITLE = "title";
     public static final String KEY_USER = "user";
 
+    public static MovieList movieListMaker(ParseUser user, String title, List<Movie> movies) throws JSONException {
+        MovieList movieList = new MovieList();
+        movieList.setUser(user);
+        movieList.setTitle(title);
+        JSONArray jsonArray = new JSONArray();
+        for (Movie movie: movies){
+            jsonArray.put(movie.toJson());
+        }
+        movieList.setMovies(jsonArray);
+
+        return movieList;
+    }
 
     public JSONArray getMovies(){
         return getJSONArray(KEY_MOVIES);
