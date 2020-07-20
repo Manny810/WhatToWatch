@@ -12,15 +12,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.whattowatch.adapters.FindMoviesAdapter;
 import com.example.whattowatch.adapters.MovieListAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +70,23 @@ public class NewMovieListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
+                    movieList.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null){
+                                Log.e(TAG, "Error while saving", e);
+                                Toast.makeText(NewMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i(TAG, "Post save was successful!");
+                            etMovieListName.setText("");
+                            movies = new ArrayList<>();
+                            movieAdapter.notifyDataSetChanged();
+                            finish();
+                        }
+                    });
                 } catch (JSONException e) {
                     Log.e(TAG, "Json Exception Thrown", e);
                 }
-                etMovieListName.setText("");
             }
         });
 
@@ -78,7 +97,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         rvMovieList.setAdapter(movieAdapter);
 
         // Set a layout Manager on the recycler view
-        rvMovieList.setLayoutManager(new GridLayoutManager(this, 2));
+        rvMovieList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
