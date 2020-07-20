@@ -91,15 +91,15 @@ public class MovieListFragment extends Fragment {
         query.addDescendingOrder(MovieList.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<MovieList>() {
             @Override
-            public void done(List<MovieList> movieLists, ParseException e) {
+            public void done(List<MovieList> newMovieLists, ParseException e) {
                 if (e != null){
                     Log.e(TAG, "Issue with getting posts", e);
                     return;
                 }
-                for (MovieList movieList: movieLists){
+                for (MovieList movieList: newMovieLists){
                     Log.i(TAG, "MovieList: " + movieList.getTitle() + ", username: " + movieList.getUser().getUsername());
                 }
-                movieLists.addAll(movieLists);
+                movieLists.addAll(newMovieLists);
                 movieAdapter.notifyDataSetChanged();
             }
         });
