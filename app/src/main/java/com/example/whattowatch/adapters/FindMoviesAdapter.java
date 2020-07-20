@@ -1,7 +1,9 @@
 package com.example.whattowatch.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,11 @@ import com.example.whattowatch.NewMovieListActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 
+import org.parceler.Parcels;
+
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.ViewHolder>{
     public static final String TAG = "MovieAdapter";
@@ -77,8 +83,15 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             // makes sure position is valid
             if (position != RecyclerView.NO_POSITION){
                 // TODO send the movie in position back to newMovieListActivity
-                Intent toMovieList = new Intent(context, NewMovieListActivity.class);
-                //startActivity(toMovieList);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(Movie.class.getSimpleName(), movies.get(position));
+                if (context instanceof Activity) {
+                    ((Activity) context).setResult(RESULT_OK, returnIntent);
+                    ((Activity) context).finish();
+                }
+                else {
+                    Log.e(TAG, "context wasn't instance of Activity");
+                }
 
             }
         }

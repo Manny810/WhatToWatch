@@ -1,5 +1,6 @@
 package com.example.whattowatch;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ public class NewMovieListActivity extends AppCompatActivity {
 
     Button btnFindMovie;
     RecyclerView rvMovieList;
+    List<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +35,23 @@ public class NewMovieListActivity extends AppCompatActivity {
         movies = new ArrayList<Movie>();
         btnFindMovie = findViewById(R.id.btnFindMovie);
         rvMovieList = findViewById(R.id.rvMovieList);
+        movieList = new ArrayList<>();
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent newMovie = new Intent(NewMovieListActivity.this, FindMovieActivity.class);
-                startActivity(newMovie);
+                startActivityForResult(newMovie, 1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+            assert data != null;
+            Movie movie = (Movie) data.getParcelableExtra(Movie.class.getSimpleName());
+        }
     }
 }

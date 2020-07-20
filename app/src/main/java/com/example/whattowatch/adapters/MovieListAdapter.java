@@ -16,13 +16,13 @@ import com.example.whattowatch.models.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
     public static final String TAG = "MovieAdapter";
 
     private Context context;
     private List<Movie> movies;
 
-    public MovieAdapter(Context context, List<Movie> movies) {
+    public MovieListAdapter(Context context, List<Movie> movies) {
         this.context = context;
         this.movies = movies;
     }

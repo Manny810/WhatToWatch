@@ -12,14 +12,13 @@ import android.widget.EditText;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.whattowatch.adapters.MovieAdapter;
+import com.example.whattowatch.adapters.FindMoviesAdapter;
 import com.example.whattowatch.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class FindMovieActivity extends AppCompatActivity {
         movies = new ArrayList<>();
 
         // create adapter for RecyclerView
-        final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+        final FindMoviesAdapter movieAdapter = new FindMoviesAdapter(this, movies);
 
         // set the adapter as the recycler view adapter
         rvMovieSearch.setAdapter(movieAdapter);
