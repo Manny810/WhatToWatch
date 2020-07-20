@@ -41,6 +41,16 @@ public class Movie extends ParseObject {
         return new_movie;
     }
 
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(KEY_DESCRIPTION, getDescription());
+        json.put(KEY_TITLE, getTitle());
+        json.put(KEY_POSTER_PATH, getPosterPath());
+        json.put(KEY_BACKDROP_PATH, getBackdropPath());
+        json.put(KEY_ID, getID());
+        return json;
+    }
+
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
     }
