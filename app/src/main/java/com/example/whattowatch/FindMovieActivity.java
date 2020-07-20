@@ -72,6 +72,7 @@ public class FindMovieActivity extends AppCompatActivity {
                         JSONObject jsonObject = json.jsonObject;
                         try {
                             JSONArray results = jsonObject.getJSONArray("results");
+                            movies.clear();
                             movies.addAll(Movie.fromJsonArray(results));
                             movieAdapter.notifyDataSetChanged();
                             Log.i(TAG, "movies displayed: " + movies.size());

@@ -1,6 +1,7 @@
 package com.example.whattowatch.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.whattowatch.FindMovieActivity;
+import com.example.whattowatch.NewMovieListActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 
@@ -74,6 +77,8 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             // makes sure position is valid
             if (position != RecyclerView.NO_POSITION){
                 // TODO send the movie in position back to newMovieListActivity
+                Intent toMovieList = new Intent(context, NewMovieListActivity.class);
+                //startActivity(toMovieList);
 
             }
         }
