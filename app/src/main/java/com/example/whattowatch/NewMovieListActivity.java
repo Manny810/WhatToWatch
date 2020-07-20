@@ -2,7 +2,6 @@ package com.example.whattowatch;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,21 +11,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.whattowatch.adapters.FindMoviesAdapter;
-import com.example.whattowatch.adapters.MovieListAdapter;
+import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +37,7 @@ public class NewMovieListActivity extends AppCompatActivity {
     RecyclerView rvMovieList;
     EditText etMovieListName;
     List<Movie> movies;
-    MovieListAdapter movieAdapter;
+    NewMovieListAdapter movieAdapter;
 
 
     @Override
@@ -91,7 +86,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         });
 
         // create adapter for RecyclerView
-        movieAdapter = new MovieListAdapter(this, movies);
+        movieAdapter = new NewMovieListAdapter(this, movies);
 
         // set the adapter as the recycler view adapter
         rvMovieList.setAdapter(movieAdapter);
