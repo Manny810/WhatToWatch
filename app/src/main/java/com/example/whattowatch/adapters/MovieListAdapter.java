@@ -13,37 +13,38 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
+import com.example.whattowatch.models.MovieList;
 
 import java.util.List;
 
-public class NewMovieListAdapter extends RecyclerView.Adapter<NewMovieListAdapter.ViewHolder>{
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
     public static final String TAG = "NewMovieListAdapter";
 
     private Context context;
-    private List<Movie> movies;
+    private List<MovieList> movieLists;
 
-    public NewMovieListAdapter(Context context, List<Movie> movies) {
+    public MovieListAdapter(Context context, List<MovieList> movieLists) {
         this.context = context;
-        this.movies = movies;
+        this.movieLists = movieLists;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
 
-        return new ViewHolder(view);
+        return new MovieListAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Movie movie = movies.get(position);
-        holder.bind(movie);
+    public void onBindViewHolder(@NonNull MovieListAdapter.ViewHolder holder, int position) {
+        MovieList movieList = movieLists.get(position);
+        holder.bind(movieList);
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return movieLists.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,10 +60,8 @@ public class NewMovieListAdapter extends RecyclerView.Adapter<NewMovieListAdapte
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
 
-        public void bind(Movie movie) {
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getDescription());
-            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
+        public void bind(MovieList movieList) {
+
         }
     }
 }
