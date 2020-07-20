@@ -66,7 +66,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
-            itemView.setOnClickListener(this); 
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {

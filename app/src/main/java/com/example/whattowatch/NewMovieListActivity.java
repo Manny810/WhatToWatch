@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.whattowatch.adapters.FindMoviesAdapter;
 import com.example.whattowatch.adapters.MovieListAdapter;
@@ -26,7 +27,9 @@ public class NewMovieListActivity extends AppCompatActivity {
      */
     public static final String TAG = "NewMovieListActivity";
     Button btnFindMovie;
+    Button btnFinishNewList;
     RecyclerView rvMovieList;
+    EditText etMovieListName;
     List<Movie> movieList;
     MovieListAdapter movieAdapter;
 
@@ -38,6 +41,9 @@ public class NewMovieListActivity extends AppCompatActivity {
 
         btnFindMovie = findViewById(R.id.btnFindMovie);
         rvMovieList = findViewById(R.id.rvMovieList);
+        btnFinishNewList = findViewById(R.id.btnFinishNewList);
+        etMovieListName = findViewById(R.id.etMovieListName);
+
         movieList = new ArrayList<>();
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +51,13 @@ public class NewMovieListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newMovie = new Intent(NewMovieListActivity.this, FindMovieActivity.class);
                 startActivityForResult(newMovie, 1);
+            }
+        });
+
+        btnFinishNewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
             }
         });
 
