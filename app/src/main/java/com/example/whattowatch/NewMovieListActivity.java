@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,10 @@ import android.widget.EditText;
 import com.example.whattowatch.adapters.FindMoviesAdapter;
 import com.example.whattowatch.adapters.MovieListAdapter;
 import com.example.whattowatch.models.Movie;
+import com.example.whattowatch.models.MovieList;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +35,7 @@ public class NewMovieListActivity extends AppCompatActivity {
     Button btnFinishNewList;
     RecyclerView rvMovieList;
     EditText etMovieListName;
-    List<Movie> movieList;
+    List<Movie> movies;
     MovieListAdapter movieAdapter;
 
 
@@ -44,7 +49,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         btnFinishNewList = findViewById(R.id.btnFinishNewList);
         etMovieListName = findViewById(R.id.etMovieListName);
 
-        movieList = new ArrayList<>();
+        movies = new ArrayList<>();
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +62,17 @@ public class NewMovieListActivity extends AppCompatActivity {
         btnFinishNewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                try {
+                    MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Json Exception Thrown", e);
+                }
+                etMovieListName.setText("");
             }
         });
 
         // create adapter for RecyclerView
-        movieAdapter = new MovieListAdapter(this, movieList);
+        movieAdapter = new MovieListAdapter(this, movies);
 
         // set the adapter as the recycler view adapter
         rvMovieList.setAdapter(movieAdapter);
@@ -77,7 +87,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         if (requestCode == 1){
             assert data != null;
             Movie movie = (Movie) data.getParcelableExtra(Movie.class.getSimpleName());
-            movieList.add(movie);
+            movies.add(movie);
             movieAdapter.notifyDataSetChanged();
         }
     }
