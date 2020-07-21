@@ -9,7 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @ParseClassName("MovieList")
 public class MovieList extends ParseObject {
@@ -53,5 +56,23 @@ public class MovieList extends ParseObject {
 
     public void setUser(ParseUser user){
         put(KEY_USER, user);
+    }
+
+    public Set<Movie> getListOfMovies() throws JSONException {
+        Set<Movie> movies = new HashSet<>();
+        JSONArray jsonArray = getMovies();
+
+        for (int i = 0; i < jsonArray.length(); i++){
+            Movie newMovie = new Movie();
+            newMovie.setDescription(jsonArray.getJSONObject(i).getString(Movie.KEY_DESCRIPTION));
+            newMovie.setTitle(jsonArray.getJSONObject(i).getString(Movie.KEY_TITLE));
+            newMovie.setPosterPath(jsonArray.getJSONObject(i).getString(Movie.KEY_POSTER_PATH));
+            newMovie.setBackdropPath(jsonArray.getJSONObject(i).getString(Movie.KEY_BACKDROP_PATH));
+            newMovie.setID(jsonArray.getJSONObject(i).getInt(Movie.KEY_ID));
+
+            movies.add(newMovie);
+        }
+
+        return movies; 
     }
 }
