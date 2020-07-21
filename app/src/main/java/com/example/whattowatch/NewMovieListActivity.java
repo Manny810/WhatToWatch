@@ -95,6 +95,10 @@ public class NewMovieListActivity extends AppCompatActivity {
         rvMovieList.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     *  onActivityResult is the method that runs when an activity comes back after a previous activity has finished
+     *  We are overwriting this method to get the movie we selected in the FindMovieActivity and adding it to our recyclerView
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

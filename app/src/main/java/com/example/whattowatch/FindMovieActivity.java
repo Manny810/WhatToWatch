@@ -39,6 +39,7 @@ public class FindMovieActivity extends AppCompatActivity {
     Button btnMovieSearch;
     List<Movie> movies;
 
+    // onCreate runs when we get to this activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,11 @@ public class FindMovieActivity extends AppCompatActivity {
         btnMovieSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // The code in here is run when the search button is pressed
+
                 String api_url = String.format(MOVIE_SEARCH_API_URL, etMovieSearch.getText());
+
+                // we make the movie database api call here to get movies associated to the keyword we searched
                 client.get(api_url, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
