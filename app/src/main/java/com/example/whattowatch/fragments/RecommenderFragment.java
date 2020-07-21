@@ -26,7 +26,9 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +39,7 @@ import okhttp3.Headers;
 
 
 public class RecommenderFragment extends Fragment {
-    public static final String TAG = "MovieListFragment";
+    public static final String TAG = "RecommenderFragment";
     public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/%s/recommendations?api_key=557bf444fa647aa33e0e1a2de0317f55&language=en-US&page=1";
 
 
@@ -82,6 +84,7 @@ public class RecommenderFragment extends Fragment {
 
     protected void queryRecommendations() {
         // Specify which class to query
+        final Set<Movie> movieRecs = new HashSet<>();
         ParseQuery<MovieList> query = ParseQuery.getQuery(MovieList.class);
         query.include(MovieList.KEY_USER);
         query.whereEqualTo(MovieList.KEY_USER, ParseUser.getCurrentUser());
@@ -107,15 +110,31 @@ public class RecommenderFragment extends Fragment {
                     client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.d(TAG, "onSuccess");
+                            JSONObject jsonObject = json.jsonObject;
+
+                            try {
+                                JSONArray results = jsonObject.getJSONArray("results");
+                                Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
+                                if (!movieRecs.contains(movie)) {
+                                    movieRecs.add(Movie.fromJsonObject(results.getJSONObject(0)));
+                                    movieRecommendations.add(Movie.fromJsonObject(results.getJSONObject(0)));
+                                    movieAdapter.notifyDataSetChanged();
+                                }
+                            } catch (JSONException ex) {
+                                Log.e(TAG, "Hit Json Exception", ex);
+                            }
+
 
                         }
 
                         @Override
                         public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-
+                            Log.e(TAG, "onFailure called");
                         }
                     });
                 }
+
             }
         });
     }

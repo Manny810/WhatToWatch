@@ -99,6 +99,7 @@ public class MovieListFragment extends Fragment {
                 for (MovieList movieList: newMovieLists){
                     Log.i(TAG, "MovieList: " + movieList.getTitle() + ", username: " + movieList.getUser().getUsername());
                 }
+                movieLists.clear();
                 movieLists.addAll(newMovieLists);
                 movieAdapter.notifyDataSetChanged();
             }
