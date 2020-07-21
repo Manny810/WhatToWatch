@@ -58,7 +58,7 @@ public class MovieList extends ParseObject {
         put(KEY_USER, user);
     }
 
-    public Set<Movie> getListOfMovies() throws JSONException {
+    public Set<Movie> getSetOfMovies() throws JSONException {
         Set<Movie> movies = new HashSet<>();
         JSONArray jsonArray = getMovies();
 
@@ -73,6 +73,6 @@ public class MovieList extends ParseObject {
             movies.add(newMovie);
         }
 
-        return movies; 
+        return movies;
     }
 }
