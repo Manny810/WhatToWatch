@@ -21,6 +21,10 @@ public class Movie extends ParseObject {
     public static final String KEY_BACKDROP_PATH = "backdropPath";
     public static final String KEY_ID = "id";
 
+    /**
+     * fromJsonArray is a movie producer that produces a list a movies from a JSONArray.
+     * The JSONArray must be from MovieDatabaseAPI, and must be an array of JSONObjects that represent movies
+     */
     public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
 
@@ -30,6 +34,12 @@ public class Movie extends ParseObject {
         return movies;
     }
 
+    /**
+     *
+     * @param movie a JSONObject from MovieDatabaseApi that represents a movie
+     * @return an instance of Movie
+     * @throws JSONException if the object is not from MovieDatabaseApi as it won't have the right keywords
+     */
     public static Movie fromJsonObject(JSONObject movie) throws JSONException {
         Movie new_movie = new Movie();
         new_movie.setDescription(movie.getString("overview"));
@@ -41,6 +51,11 @@ public class Movie extends ParseObject {
         return new_movie;
     }
 
+    /**
+     *
+     * @return a JSONObject representation of movie
+     * @throws JSONException
+     */
     public JSONObject toJson() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(KEY_DESCRIPTION, getDescription());

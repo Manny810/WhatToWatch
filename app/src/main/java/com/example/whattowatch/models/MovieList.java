@@ -21,6 +21,14 @@ public class MovieList extends ParseObject {
     public static final String KEY_TITLE = "title";
     public static final String KEY_USER = "user";
 
+    /**
+     * movieListMaker is a function that transforms a list of movies into a parse instance of MovieList
+     * @param user the ParseUser owner of the Movie List being made, typically will be ParseUser.getCurrentOwner()
+     * @param title the title of the Movie List
+     * @param movies The list of movies that will be stored in the list
+     * @return a parse instance of MovieList
+     * @throws JSONException
+     */
     public static MovieList movieListMaker(ParseUser user, String title, List<Movie> movies) throws JSONException {
         MovieList movieList = new MovieList();
         movieList.setUser(user);
@@ -58,6 +66,11 @@ public class MovieList extends ParseObject {
         put(KEY_USER, user);
     }
 
+    /**
+     *
+     * @return a set of movie instances for all movies within the movie list
+     * @throws JSONException
+     */
     public Set<Movie> getSetOfMovies() throws JSONException {
         Set<Movie> movies = new HashSet<>();
         JSONArray jsonArray = getMovies();
