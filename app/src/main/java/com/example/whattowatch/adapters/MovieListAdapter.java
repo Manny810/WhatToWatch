@@ -1,7 +1,10 @@
 package com.example.whattowatch.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.whattowatch.MovieListDetail;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
@@ -21,11 +25,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Adapters are the brains behind the recyclerView, as they are responsible for setting up each row and updating the recyclerView
  */
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
-    public static final String TAG = "NewMovieListAdapter";
+    public static final String TAG = "MovieListAdapter";
 
     private Context context;
     private List<MovieList> movieLists;
@@ -54,7 +60,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return movieLists.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView tvMovieListTitle;
         private TextView tvMovieListSize;
@@ -65,6 +71,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             tvMovieListTitle = itemView.findViewById(R.id.tvMovieListTitle);
             tvMovieListSize = itemView.findViewById(R.id.tvMovieListSize);
             tvMovieListCreatedAt = itemView.findViewById(R.id.tvMovieListCreatedAt);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(MovieList movieList) {
@@ -90,6 +97,21 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             }
 
             return relativeDate;
+        }
+
+        @Override
+        public void onClick(View view) {
+            // get the item position
+            int position = getAdapterPosition();
+            Log.d(TAG, "Clicked on position " + position);
+
+            // makes sure position is valid
+            if (position != RecyclerView.NO_POSITION){
+                Intent movieListIntent = new Intent(context, MovieListDetail.class);
+                movieListIntent.putExtra(Movie.class.getSimpleName(), movieLists.get(position));
+                context.startActivity(movieListIntent);
+
+            }
         }
     }
 }
