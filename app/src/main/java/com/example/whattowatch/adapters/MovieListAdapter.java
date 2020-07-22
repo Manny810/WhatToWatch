@@ -56,9 +56,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvMovieListTitle;
-        TextView tvMovieListSize;
-        TextView tvMovieListCreatedAt;
+        private TextView tvMovieListTitle;
+        private TextView tvMovieListSize;
+        private TextView tvMovieListCreatedAt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

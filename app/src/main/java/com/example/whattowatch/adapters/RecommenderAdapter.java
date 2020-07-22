@@ -48,9 +48,9 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitle;
-        TextView tvOverview;
-        ImageView ivPoster;
+        private TextView tvTitle;
+        private TextView tvOverview;
+        private ImageView ivPoster;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
