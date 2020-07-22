@@ -88,4 +88,18 @@ public class MovieList extends ParseObject {
 
         return movies;
     }
+
+    public List<Movie> getListOfMovies() {
+        List<Movie> movies = new ArrayList<>();
+        Set<Movie> movieSet = null;
+        try {
+            movieSet = getSetOfMovies();
+        } catch (JSONException e) {
+            movieSet = new HashSet<>();
+        }
+        for (Movie movie: movieSet){
+            movies.add(movie);
+        }
+        return movies;
+    }
 }

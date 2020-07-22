@@ -60,8 +60,8 @@ public class Movie extends ParseObject {
         JSONObject json = new JSONObject();
         json.put(KEY_DESCRIPTION, getDescription());
         json.put(KEY_TITLE, getTitle());
-        json.put(KEY_POSTER_PATH, getPosterPath());
-        json.put(KEY_BACKDROP_PATH, getBackdropPath());
+        json.put(KEY_POSTER_PATH, getPosterPathKey());
+        json.put(KEY_BACKDROP_PATH, getBackdropPathKey());
         json.put(KEY_ID, getID());
         return json;
     }
@@ -84,11 +84,15 @@ public class Movie extends ParseObject {
 
     public String getPosterPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_POSTER_PATH)); }
 
+    public String getPosterPathKey(){ return getString(KEY_POSTER_PATH); }
+
     public void setPosterPath(String posterPath){
         put(KEY_POSTER_PATH, posterPath);
     }
 
     public String getBackdropPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_BACKDROP_PATH)); }
+
+    public String getBackdropPathKey(){ return getString(KEY_BACKDROP_PATH); }
 
     public void setBackdropPath(String backdropPath){
         put(KEY_BACKDROP_PATH, backdropPath);

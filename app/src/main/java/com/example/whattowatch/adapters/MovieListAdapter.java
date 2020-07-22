@@ -20,6 +20,8 @@ import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
 
+import org.parceler.Parcels;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -108,7 +110,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             // makes sure position is valid
             if (position != RecyclerView.NO_POSITION){
                 Intent movieListIntent = new Intent(context, MovieListDetail.class);
-                movieListIntent.putExtra(Movie.class.getSimpleName(), movieLists.get(position));
+                movieListIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieLists.get(position)));
+                Log.d(TAG, "MovieList being passed: " + movieLists.get(position));
                 context.startActivity(movieListIntent);
 
             }
