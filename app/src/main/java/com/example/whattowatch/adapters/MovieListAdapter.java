@@ -21,6 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adapters are the brains behind the recyclerView, as they are responsible for setting up each row and updating the recyclerView
+ */
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
     public static final String TAG = "NewMovieListAdapter";
 

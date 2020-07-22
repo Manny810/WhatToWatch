@@ -96,8 +96,8 @@ public class NewMovieListActivity extends AppCompatActivity {
     }
 
     /**
-     *  onActivityResult is the method that runs when an activity comes back after a previous activity has finished
-     *  We are overwriting this method to get the movie we selected in the FindMovieActivity and adding it to our recyclerView
+     *  We are overwriting onActivityResult so when we get back, we add the selected movie in the previous activity to our recyclerView
+     *  and then notify the recyclerView adapter that the recyclerView changed and must be updated
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

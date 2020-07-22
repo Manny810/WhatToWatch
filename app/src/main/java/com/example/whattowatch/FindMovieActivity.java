@@ -68,7 +68,7 @@ public class FindMovieActivity extends AppCompatActivity {
 
                 String api_url = String.format(MOVIE_SEARCH_API_URL, etMovieSearch.getText());
 
-                // we make the movie database api call here to get movies associated to the keyword we searched
+                // get movies associated to the keyword we searched
                 client.get(api_url, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
