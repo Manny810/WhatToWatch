@@ -57,9 +57,9 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tvTitle;
-        TextView tvOverview;
-        ImageView ivPoster;
+        private TextView tvTitle;
+        private TextView tvOverview;
+        private ImageView ivPoster;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

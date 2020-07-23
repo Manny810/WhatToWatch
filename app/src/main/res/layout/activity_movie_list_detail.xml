@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieListDetail">
+
+    <TextView
+        android:id="@+id/tvListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Movie List Title" />
+
+    <TextView
+        android:id="@+id/tvListSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvListTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        tools:text="Number of Movies: 12" />
+
+    <TextView
+        android:id="@+id/tvListCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvListTitle"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/tvListSize"
+        tools:text=" | Created 15 hrs ago" />
+
+    <TextView
+        android:id="@+id/tvRecommendationSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvListTitle"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/tvListCreatedAt"
+        tools:text="Recommendations: 15" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMovieListDetail"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/tvListCreatedAt"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/tvRecTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvMovieListDetail"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:text="Recommended: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMovieListRecommendations"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvRecTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
+
+</RelativeLayout>

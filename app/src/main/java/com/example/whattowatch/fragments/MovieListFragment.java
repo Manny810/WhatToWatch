@@ -104,5 +104,6 @@ public class MovieListFragment extends Fragment {
                 movieAdapter.notifyDataSetChanged();
             }
         });
+
     }
 }
