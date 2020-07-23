@@ -24,6 +24,7 @@ import com.example.whattowatch.R;
 import com.example.whattowatch.adapters.MovieListAdapter;
 import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.models.MovieList;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -88,7 +89,8 @@ public class MovieListFragment extends Fragment {
         // Set a layout Manager on the recycler view
         rvMovieLists.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -97,6 +99,19 @@ public class MovieListFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Take action for the swiped item
+                final int adapterPosition = viewHolder.getAdapterPosition();
+                MovieList movieList = movieLists.get(adapterPosition);
+                movieList.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null){
+                            Log.e(TAG, "Parse Exception thrown", e);
+                        }
+                        movieLists.remove(adapterPosition);
+                        movieAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "Movie Successfully Deleted");
+                    }
+                });
             }
 
             @Override
@@ -109,6 +124,7 @@ public class MovieListFragment extends Fragment {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(rvMovieLists);
 
