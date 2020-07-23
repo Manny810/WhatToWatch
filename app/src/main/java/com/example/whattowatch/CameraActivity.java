@@ -62,7 +62,6 @@ public class CameraActivity extends AppCompatActivity {
                     return;
                 }
                 saveUserPhoto(ParseUser.getCurrentUser(), photoFile);
-                finish();
             }
         });
 
@@ -122,7 +121,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void saveUserPhoto(ParseUser currentUser, File photoFile) {
-        ParseFile parseFile = new ParseFile(photoFile);
+        final ParseFile parseFile = new ParseFile(photoFile);
         parseFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -143,6 +142,10 @@ public class CameraActivity extends AppCompatActivity {
                 }
                 Log.i(TAG, "Post save was successful!");
                 ivPostImage.setImageResource(0);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(ParseFile.class.getSimpleName(), parseFile);
+                setResult(RESULT_OK, returnIntent);
+                finish();
             }
         });
 
