@@ -26,6 +26,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class MovieListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent movieListIntent = new Intent(getContext(), NewMovieListActivity.class);
-                startActivity(movieListIntent);
+                startActivityForResult(movieListIntent, 2);
             }
         });
 
@@ -105,5 +107,17 @@ public class MovieListFragment extends Fragment {
             }
         });
 
+    }
+
+    // Calling queryLists when we get back to movieListFragment so that we can repull from the database and get the latest movie lists
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2){
+            assert data != null;
+            MovieList newMovieList = (MovieList) Parcels.unwrap(data.getParcelableExtra(MovieList.class.getSimpleName()));
+            movieLists.add(newMovieList);
+            movieAdapter.notifyDataSetChanged();
+        }
     }
 }

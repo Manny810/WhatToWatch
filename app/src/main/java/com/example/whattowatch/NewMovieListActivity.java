@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +17,13 @@ import android.widget.Toast;
 import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,10 @@ public class NewMovieListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
+                    setResult(RESULT_OK, returnIntent);
+
                     movieList.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -79,6 +86,7 @@ public class NewMovieListActivity extends AppCompatActivity {
                             finish();
                         }
                     });
+
                 } catch (JSONException e) {
                     Log.e(TAG, "Json Exception Thrown", e);
                 }
