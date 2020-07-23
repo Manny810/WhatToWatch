@@ -120,7 +120,7 @@ public class MovieListFragment extends Fragment {
             Log.d(TAG, "newMovie being added");
             assert data != null;
             MovieList newMovieList = (MovieList) Parcels.unwrap(data.getParcelableExtra(MovieList.class.getSimpleName()));
-            movieLists.add(newMovieList);
+            movieLists.add(0, newMovieList);
             movieAdapter.notifyDataSetChanged();
         }
     }
