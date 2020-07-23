@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.whattowatch.CameraActivity;
 import com.example.whattowatch.LoginActivity;
 import com.example.whattowatch.R;
+import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.User;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -83,7 +84,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(getContext(), CameraActivity.class);
-                startActivity(cameraIntent);
+                startActivityForResult(cameraIntent, 3);
 
             }
         });
@@ -101,5 +102,16 @@ public class AccountFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "returned to AccountFragment");
+        if (requestCode == 3 && resultCode == RESULT_OK){
+            assert data != null;
+            ParseFile parseFile = (ParseFile) data.getParcelableExtra(ParseFile.class.getSimpleName());
+            Glide.with(getContext()).load(parseFile.getUrl()).into(ivProfilePhoto);
+            Log.d(TAG, "new Profile photo uploaded");
 
+        }
+    }
 }
