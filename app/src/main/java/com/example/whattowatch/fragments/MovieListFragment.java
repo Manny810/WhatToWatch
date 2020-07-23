@@ -31,6 +31,8 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class MovieListFragment extends Fragment {
     public static final String TAG = "MovieListFragment";
@@ -113,7 +115,9 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2){
+        Log.d(TAG, "onActivityResult called");
+        if (requestCode == 2 && resultCode == RESULT_OK){
+            Log.d(TAG, "newMovie being added");
             assert data != null;
             MovieList newMovieList = (MovieList) Parcels.unwrap(data.getParcelableExtra(MovieList.class.getSimpleName()));
             movieLists.add(newMovieList);
