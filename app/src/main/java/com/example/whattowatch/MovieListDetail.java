@@ -70,6 +70,8 @@ public class MovieListDetail extends AppCompatActivity {
         tvListCreatedAt = findViewById(R.id.tvListCreatedAt);
         tvRecommendationSize = findViewById(R.id.tvRecommendationSize);
         rvMovieListDetail = findViewById(R.id.rvMovieListDetail);
+        rvMovieListRecommendations = findViewById(R.id.rvMovieListRecommendations);
+        rvMovieListDetail.setVisibility(View.INVISIBLE);
         btnSwitchList = findViewById(R.id.btnSwitchList);
         tvRecyclerViewTitle = findViewById(R.id.tvRecyclerViewTitle);
 
@@ -99,14 +101,16 @@ public class MovieListDetail extends AppCompatActivity {
                     onRecommendations = false;
                     tvRecyclerViewTitle.setText(MOVIE_LIST_TEXT);
                     btnSwitchList.setText(RECOMMENDATION_BUTTON_TEXT);
-                    rvMovieListDetail = findViewById(R.id.rvMovieListDetail);
+                    rvMovieListRecommendations.setVisibility(View.INVISIBLE);
+                    rvMovieListDetail.setVisibility(View.VISIBLE);
 
                 } else {
                     // switch recycler views to movieList Recommendations
                     onRecommendations = true;
                     tvRecyclerViewTitle.setText(RECOMMENDATION_TEXT);
                     btnSwitchList.setText(MOVIE_LIST_BUTTON_TEXT);
-                    rvMovieListRecommendations = findViewById(R.id.rvMovieListDetail);
+                    rvMovieListDetail.setVisibility(View.INVISIBLE);
+                    rvMovieListRecommendations.setVisibility(View.VISIBLE);
 
                 }
             }

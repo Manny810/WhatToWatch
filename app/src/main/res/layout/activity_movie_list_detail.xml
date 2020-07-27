@@ -78,4 +78,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Recommendations" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMovieListRecommendations"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvRecyclerViewTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
+
 </RelativeLayout>
