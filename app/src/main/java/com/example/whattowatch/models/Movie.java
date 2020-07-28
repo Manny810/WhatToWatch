@@ -49,7 +49,7 @@ public class Movie extends ParseObject {
 
     @Override
     public int hashCode() {
-        return this.getDescription().hashCode() + this.getPosterPath().hashCode() + this.getBackdropPath().hashCode() + this.getID().hashCode() + this.getTitle().hashCode(); 
+        return this.getDescription().hashCode() + this.getPosterPath().hashCode() + this.getBackdropPath().hashCode() + this.getID().hashCode() + this.getTitle().hashCode();
     }
 
     /**
