@@ -1,6 +1,10 @@
 package com.example.whattowatch.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.ViewHolder>{
@@ -51,18 +63,72 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
         private TextView tvTitle;
         private TextView tvOverview;
         private ImageView ivPoster;
+        private CardView cvMovie;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            cvMovie = itemView.findViewById(R.id.cvMovie);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
             Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
+
+            // Define an asynchronous listener for image loading
+            CustomTarget<Bitmap> target = new CustomTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    // TODO 1. Instruct Glide to load the bitmap into the `holder.ivProfile` profile image view
+
+                    // TODO 2. Use generate() method from the Palette API to get the vibrant color from the bitmap
+                    // Set the result as the background color for `holder.vPalette` view containing the contact's name.
+                }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {
+                    // can leave empty
+                }
+            };
+            //URL url = new URL(movie.getPosterPath());
+            //Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+            Glide.with(context)
+                    .asBitmap()
+                    .load(movie.getPosterPath())
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            ivPoster.setImageBitmap(resource);
+                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    // Get the "vibrant" color swatch based on the bitmap
+                                    Palette.Swatch vibrant = palette.getVibrantSwatch();
+                                    if (vibrant != null) {
+                                        // Set the background color of a layout based on the vibrant color
+                                        cvMovie.setBackgroundColor(vibrant.getRgb());
+                                        // Update the title TextView with the proper text color
+                                        tvTitle.setTextColor(vibrant.getTitleTextColor());
+                                        tvOverview.setTextColor(vibrant.getTitleTextColor());
+
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+
+
+            //Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.id.ivPoster);
+            //Glide.with(context).asBitmap().load(movie.getPosterPath()).centerCrop().into(bitmap);
+
         }
     }
 }
