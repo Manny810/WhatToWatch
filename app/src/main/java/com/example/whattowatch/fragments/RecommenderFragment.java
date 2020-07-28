@@ -117,8 +117,8 @@ public class RecommenderFragment extends Fragment {
                                 JSONArray results = jsonObject.getJSONArray("results");
                                 Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
                                 if (!movieRecs.contains(movie)) {
-                                    movieRecs.add(Movie.fromJsonObject(results.getJSONObject(0)));
-                                    movieRecommendations.add(Movie.fromJsonObject(results.getJSONObject(0)));
+                                    movieRecs.add(movie);
+                                    movieRecommendations.add(movie);
                                     movieAdapter.notifyDataSetChanged();
                                 }
                             } catch (JSONException ex) {

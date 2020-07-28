@@ -74,7 +74,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
-            cvMovie = itemView.findViewById(R.id.cvMovie); 
+            cvMovie = itemView.findViewById(R.id.cvMovie);
             itemView.setOnClickListener(this);
         }
 

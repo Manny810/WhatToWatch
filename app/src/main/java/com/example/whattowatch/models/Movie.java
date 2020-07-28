@@ -1,5 +1,7 @@
 package com.example.whattowatch.models;
 
+import androidx.annotation.Nullable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -32,6 +34,22 @@ public class Movie extends ParseObject {
             movies.add(fromJsonObject(movieJsonArray.getJSONObject(i)));
         }
         return movies;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Movie){
+            Movie that = (Movie) obj;
+            return this.getDescription().equals(that.getDescription()) && this.getTitle().equals(that.getTitle())
+                    && this.getPosterPath().equals(that.getPosterPath()) && this.getBackdropPath().equals(that.getBackdropPath())
+                    && this.getID().equals(that.getID());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getDescription().hashCode() + this.getPosterPath().hashCode() + this.getBackdropPath().hashCode() + this.getID().hashCode() + this.getTitle().hashCode(); 
     }
 
     /**
