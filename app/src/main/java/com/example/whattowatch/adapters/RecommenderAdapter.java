@@ -76,25 +76,6 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
-            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
-
-            // Define an asynchronous listener for image loading
-            CustomTarget<Bitmap> target = new CustomTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    // TODO 1. Instruct Glide to load the bitmap into the `holder.ivProfile` profile image view
-
-                    // TODO 2. Use generate() method from the Palette API to get the vibrant color from the bitmap
-                    // Set the result as the background color for `holder.vPalette` view containing the contact's name.
-                }
-
-                @Override
-                public void onLoadCleared(@Nullable Drawable placeholder) {
-                    // can leave empty
-                }
-            };
-            //URL url = new URL(movie.getPosterPath());
-            //Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
             Glide.with(context)
                     .asBitmap()
@@ -124,10 +105,6 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                         public void onLoadCleared(@Nullable Drawable placeholder) {
                         }
                     });
-
-
-            //Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.id.ivPoster);
-            //Glide.with(context).asBitmap().load(movie.getPosterPath()).centerCrop().into(bitmap);
 
         }
     }
