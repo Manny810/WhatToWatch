@@ -51,28 +51,38 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovieListDetail"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/tvListCreatedAt"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvRecyclerViewTitle"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp" />
 
-    <TextView
-        android:id="@+id/tvRecTitle"
+    <Button
+        android:id="@+id/btnSwitchList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvMovieListDetail"
+        android:layout_below="@+id/tvListSize"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:text="Recommended: "
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:text="Switch to Movies in the List" />
+
+    <TextView
+        android:id="@+id/tvRecyclerViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnSwitchList"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Recommendations" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovieListRecommendations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvRecTitle"
+        android:layout_below="@+id/tvRecyclerViewTitle"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp" />

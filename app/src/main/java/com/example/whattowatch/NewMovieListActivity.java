@@ -2,6 +2,7 @@ package com.example.whattowatch;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,6 +102,9 @@ public class NewMovieListActivity extends AppCompatActivity {
 
         // Set a layout Manager on the recycler view
         rvMovieList.setLayoutManager(new LinearLayoutManager(this));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tbNewMovieList);
+        setSupportActionBar(toolbar);
     }
 
     /**

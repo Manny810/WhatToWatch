@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<androidx.cardview.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/cell_margin"
+    card_view:cardBackgroundColor="#E6E6E6"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="8dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tvMovieListTitle"
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="36dp"
-        tools:text="Movie List Title" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvMovieListSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvMovieListTitle"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        tools:text="Number of Movies: 22" />
+        <TextView
+            android:id="@+id/tvMovieListTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="36dp"
+            tools:text="Movie List Title" />
 
-    <TextView
-        android:id="@+id/tvMovieListCreatedAt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvMovieListTitle"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/tvMovieListSize"
-        tools:text="Created 10 days ago" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvMovieListSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMovieListTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            tools:text="Number of Movies: 22" />
+
+        <TextView
+            android:id="@+id/tvMovieListCreatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMovieListTitle"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/tvMovieListSize"
+            tools:text="Created 10 days ago" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

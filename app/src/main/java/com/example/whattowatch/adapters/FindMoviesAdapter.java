@@ -3,6 +3,8 @@ package com.example.whattowatch.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.whattowatch.FindMovieActivity;
 import com.example.whattowatch.NewMovieListActivity;
 import com.example.whattowatch.R;
@@ -60,19 +67,48 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
         private TextView tvTitle;
         private TextView tvOverview;
         private ImageView ivPoster;
+        private CardView cvMovie;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            cvMovie = itemView.findViewById(R.id.cvMovie);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
-            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
+            Glide.with(context)
+                    .asBitmap()
+                    .load(movie.getPosterPath())
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            ivPoster.setImageBitmap(resource);
+                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    // Get the "vibrant" color swatch based on the bitmap
+                                    Palette.Swatch vibrant = palette.getVibrantSwatch();
+                                    if (vibrant != null) {
+                                        // Set the background color of a layout based on the vibrant color
+                                        cvMovie.setBackgroundColor(vibrant.getRgb());
+                                        // Update the title TextView with the proper text color
+                                        tvTitle.setTextColor(vibrant.getTitleTextColor());
+                                        tvOverview.setTextColor(vibrant.getTitleTextColor());
+
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
         }
 
 

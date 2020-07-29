@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -32,11 +34,19 @@ import okhttp3.Headers;
 public class MovieListDetail extends AppCompatActivity {
     public static final String TAG = "MovieListDetail";
     public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/%s/recommendations?api_key=557bf444fa647aa33e0e1a2de0317f55&language=en-US&page=1";
+    public static final String RECOMMENDATION_TEXT = "Your Recommendations";
+    public static final String MOVIE_LIST_TEXT = "Movies in Your List";
+    public static final String MOVIE_LIST_BUTTON_TEXT = "Switch to Movies in Your List";
+    public static final String RECOMMENDATION_BUTTON_TEXT = "Switch to Recommendations";
 
     TextView tvListTitle;
     TextView tvListSize;
     TextView tvListCreatedAt;
     TextView tvRecommendationSize;
+    TextView tvRecyclerViewTitle;
+    Button btnSwitchList;
+
+    Boolean onRecommendations = true;
 
     RecyclerView rvMovieListDetail;
     RecyclerView rvMovieListRecommendations;
@@ -61,6 +71,9 @@ public class MovieListDetail extends AppCompatActivity {
         tvRecommendationSize = findViewById(R.id.tvRecommendationSize);
         rvMovieListDetail = findViewById(R.id.rvMovieListDetail);
         rvMovieListRecommendations = findViewById(R.id.rvMovieListRecommendations);
+        rvMovieListDetail.setVisibility(View.INVISIBLE);
+        btnSwitchList = findViewById(R.id.btnSwitchList);
+        tvRecyclerViewTitle = findViewById(R.id.tvRecyclerViewTitle);
 
         // unwrap the movieList passed in via intent, using its simple name as a key
         movieList = (MovieList) Parcels.unwrap(getIntent().getParcelableExtra(MovieList.class.getSimpleName()));
@@ -78,6 +91,30 @@ public class MovieListDetail extends AppCompatActivity {
         tvListTitle.setText(movieList.getTitle());
         tvListSize.setText(String.format("Number of Movies: %d", movies.size()));
         tvListCreatedAt.setText(String.format("Created %s", getRelativeTimeAgo(movieList.getCreatedAt().toString())));
+        tvRecyclerViewTitle.setText(RECOMMENDATION_TEXT);
+
+        btnSwitchList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onRecommendations){
+                    // switch recycler views to movieList movies
+                    onRecommendations = false;
+                    tvRecyclerViewTitle.setText(MOVIE_LIST_TEXT);
+                    btnSwitchList.setText(RECOMMENDATION_BUTTON_TEXT);
+                    rvMovieListRecommendations.setVisibility(View.INVISIBLE);
+                    rvMovieListDetail.setVisibility(View.VISIBLE);
+
+                } else {
+                    // switch recycler views to movieList Recommendations
+                    onRecommendations = true;
+                    tvRecyclerViewTitle.setText(RECOMMENDATION_TEXT);
+                    btnSwitchList.setText(MOVIE_LIST_BUTTON_TEXT);
+                    rvMovieListDetail.setVisibility(View.INVISIBLE);
+                    rvMovieListRecommendations.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
 
         getRecommendations();
 
