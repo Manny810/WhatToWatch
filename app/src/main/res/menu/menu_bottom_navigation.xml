@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_recommendations"
         android:icon="@android:drawable/ic_menu_edit"
-        android:title="Recommendations"
+        android:title="Recommended"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_account"
