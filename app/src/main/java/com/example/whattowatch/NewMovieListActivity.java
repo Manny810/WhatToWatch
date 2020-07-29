@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.whattowatch.adapters.NewMovieListAdapter;
+import com.example.whattowatch.adapters.RecommenderAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
 import com.parse.Parse;
@@ -41,7 +42,7 @@ public class NewMovieListActivity extends AppCompatActivity {
     RecyclerView rvMovieList;
     EditText etMovieListName;
     List<Movie> movies;
-    NewMovieListAdapter movieAdapter;
+    RecommenderAdapter movieAdapter;
 
 
     @Override
@@ -95,7 +96,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         });
 
         // create adapter for RecyclerView
-        movieAdapter = new NewMovieListAdapter(this, movies);
+        movieAdapter = new RecommenderAdapter(this, movies);
 
         // set the adapter as the recycler view adapter
         rvMovieList.setAdapter(movieAdapter);
