@@ -1,6 +1,8 @@
 package com.example.whattowatch.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -20,13 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.whattowatch.MovieDetailActivity;
+import com.example.whattowatch.MovieListDetail;
 import com.example.whattowatch.R;
 import com.example.whattowatch.models.Movie;
+import com.example.whattowatch.models.MovieList;
+
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.ViewHolder>{
     public static final String TAG = "RecommenderAdapter";
@@ -58,7 +67,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
         return movies.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView tvTitle;
         private TextView tvOverview;
@@ -71,6 +80,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
             cvMovie = itemView.findViewById(R.id.cvMovie);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
@@ -106,6 +116,21 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                         }
                     });
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            // get the item position
+            int position = getAdapterPosition();
+            Log.d(TAG, "Clicked on position " + position);
+            // makes sure position is valid
+            if (position != RecyclerView.NO_POSITION){
+                Intent movieDetailIntent = new Intent(context, MovieDetailActivity.class);
+                movieDetailIntent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movies.get(position)));
+                Log.d(TAG, "MovieList being passed: " + movies.get(position));
+                context.startActivity(movieDetailIntent);
+
+            }
         }
     }
 }
