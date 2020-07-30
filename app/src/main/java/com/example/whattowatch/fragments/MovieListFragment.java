@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.whattowatch.CameraActivity;
+import com.example.whattowatch.EditMovieListActivity;
 import com.example.whattowatch.NewMovieListActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.adapters.MovieListAdapter;
@@ -34,6 +35,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -90,7 +92,7 @@ public class MovieListFragment extends Fragment {
         rvMovieLists.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -101,24 +103,35 @@ public class MovieListFragment extends Fragment {
                 // Take action for the swiped item
                 final int adapterPosition = viewHolder.getAdapterPosition();
                 MovieList movieList = movieLists.get(adapterPosition);
-                movieList.deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null){
-                            Log.e(TAG, "Parse Exception thrown", e);
+                if (direction == ItemTouchHelper.LEFT) {
+                    // delete movie list
+                    movieList.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Parse Exception thrown", e);
+                            }
+                            movieLists.remove(adapterPosition);
+                            movieAdapter.notifyDataSetChanged();
+                            Log.d(TAG, "Movie Successfully Deleted");
                         }
-                        movieLists.remove(adapterPosition);
-                        movieAdapter.notifyDataSetChanged();
-                        Log.d(TAG, "Movie Successfully Deleted");
-                    }
-                });
+                    });
+                }
+                else {
+                    // edit movie list
+                    Intent editMovieListIntent = new Intent(getContext(), EditMovieListActivity.class);
+                    editMovieListIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
+                    Objects.requireNonNull(getContext()).startActivity(editMovieListIntent);
+                }
             }
 
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
-                        .addActionIcon(R.drawable.trash)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.swipeLeftBackground))
+                        .addSwipeLeftActionIcon(R.drawable.trash)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.swipeRightBackground))
+                        .addSwipeRightActionIcon(R.drawable.edit)
                         .create()
                         .decorate();
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
