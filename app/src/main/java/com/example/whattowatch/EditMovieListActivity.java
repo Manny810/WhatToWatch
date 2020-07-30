@@ -15,19 +15,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.whattowatch.adapters.RecommenderAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
+import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.util.List;
 import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+import static com.example.whattowatch.models.MovieList.KEY_MOVIES;
+import static com.example.whattowatch.models.MovieList.KEY_TITLE;
 
 public class EditMovieListActivity extends AppCompatActivity {
     public static final String TAG = "EditMovieListActivity";
@@ -75,7 +82,20 @@ public class EditMovieListActivity extends AppCompatActivity {
         btnFinishEditList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                JSONArray jsonMovies = toJsonArray(movies);
+                movieList.put(KEY_TITLE, etEditMovieListName.getText().toString()); 
+                movieList.put(KEY_MOVIES, jsonMovies);
+                movieList.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null){
+                            Log.e(TAG, "Error while saving", e);
+                            Toast.makeText(EditMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                        }
+                        Log.i(TAG, "Post save was successful!");
+                        finish();
+                    }
+                });
             }
         });
 
@@ -112,6 +132,18 @@ public class EditMovieListActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(rvEditMovieList);
+    }
+
+    private JSONArray toJsonArray(List<Movie> movies) {
+        JSONArray jsonMovies = new JSONArray();
+        for (Movie movie : movies){
+            try {
+                jsonMovies.put(movie.toJson());
+            } catch (JSONException e) {
+                Log.e(TAG, "Json Exception thrown", e);
+            }
+        }
+        return jsonMovies;
     }
 
     /**
