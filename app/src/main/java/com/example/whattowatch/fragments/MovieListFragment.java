@@ -44,6 +44,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class MovieListFragment extends Fragment {
     public static final String TAG = "MovieListFragment";
+    public static final int REQUEST_CODE_NEW_MOVIE = 2;
+    public static final int REQUEST_CODE_EDIT_MOVIE = 22;
 
     RecyclerView rvMovieLists;
     Button btnNewList;
@@ -76,7 +78,7 @@ public class MovieListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent movieListIntent = new Intent(getContext(), NewMovieListActivity.class);
-                startActivityForResult(movieListIntent, 2);
+                startActivityForResult(movieListIntent, REQUEST_CODE_NEW_MOVIE);
             }
         });
 
@@ -121,7 +123,7 @@ public class MovieListFragment extends Fragment {
                     // edit movie list
                     Intent editMovieListIntent = new Intent(getContext(), EditMovieListActivity.class);
                     editMovieListIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
-                    Objects.requireNonNull(getContext()).startActivity(editMovieListIntent);
+                    startActivityForResult(editMovieListIntent, REQUEST_CODE_EDIT_MOVIE);
                 }
             }
 
@@ -174,12 +176,15 @@ public class MovieListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult called");
-        if (requestCode == 2 && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CODE_NEW_MOVIE && resultCode == RESULT_OK){
             Log.d(TAG, "newMovie being added");
             assert data != null;
             MovieList newMovieList = (MovieList) Parcels.unwrap(data.getParcelableExtra(MovieList.class.getSimpleName()));
             movieLists.add(0, newMovieList);
             movieAdapter.notifyDataSetChanged();
+        }
+        else if (requestCode == REQUEST_CODE_EDIT_MOVIE){
+            queryLists();
         }
     }
 

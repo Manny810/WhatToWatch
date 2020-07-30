@@ -83,7 +83,7 @@ public class EditMovieListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 JSONArray jsonMovies = toJsonArray(movies);
-                movieList.put(KEY_TITLE, etEditMovieListName.getText().toString()); 
+                movieList.put(KEY_TITLE, etEditMovieListName.getText().toString());
                 movieList.put(KEY_MOVIES, jsonMovies);
                 movieList.saveInBackground(new SaveCallback() {
                     @Override
