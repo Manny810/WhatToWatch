@@ -61,6 +61,7 @@ public class MovieListDetail extends AppCompatActivity {
     MovieList movieList;
     List<Movie> movies;
     List<Movie> movieRecs;
+    Set<Movie> moviesSet;
 
     RecommenderAdapter movieAdapter;
     RecommenderAdapter movieRecAdapter;
@@ -87,6 +88,11 @@ public class MovieListDetail extends AppCompatActivity {
 
         assert movieList != null;
         movies = movieList.getListOfMovies();
+        try {
+            moviesSet = movieList.getSetOfMovies();
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception", e);
+        }
         movieRecs = new ArrayList<>();
         movieAdapter = new RecommenderAdapter(this, movies);
         movieRecAdapter = new RecommenderAdapter(this, movieRecs);
@@ -144,13 +150,14 @@ public class MovieListDetail extends AppCompatActivity {
                         JSONArray results = jsonObject.getJSONArray("results");
                         for (int i = 0; i < 20; i++){
                             Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
-                            if (recommendationScores.containsKey(movie)){
-                                // if we have seen this movie before, change the score
-                                Double newScore = recommendationScores.get(movie) + 1 - .02*i;
-                                recommendationScores.put(movie, newScore);
-                            }
-                            else{
-                                recommendationScores.put(movie, 1 - .02*i);
+                            if (!moviesSet.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
+                                if (recommendationScores.containsKey(movie)) {
+                                    // if we have seen this movie before, change the score
+                                    Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
+                                    recommendationScores.put(movie, newScore);
+                                } else {
+                                    recommendationScores.put(movie, 1 - .02 * i);
+                                }
                             }
                         }
 
