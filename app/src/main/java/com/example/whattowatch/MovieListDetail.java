@@ -129,11 +129,11 @@ public class MovieListDetail extends AppCompatActivity {
             }
         });
 
-        getNewRecommendations();
+        getRecommendations();
 
     }
 
-    private void getNewRecommendations() {
+    private void getRecommendations() {
         final Map<Movie, Double> recommendationScores = new HashMap<>();
         Set<Movie> movieSetInList = new HashSet<>();
         for (Movie movie: movies){
@@ -190,35 +190,6 @@ public class MovieListDetail extends AppCompatActivity {
             });
         }
 
-    }
-
-
-    private void getRecommendations() {
-        for (Movie movie : movies) {
-            client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.d(TAG, "onSuccess");
-                    JSONObject jsonObject = json.jsonObject;
-
-                    try {
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
-                        movieRecs.add(movie);
-                        movieRecAdapter.notifyDataSetChanged();
-
-                    } catch (JSONException ex) {
-                        Log.e(TAG, "Hit Json Exception", ex);
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                    Log.e(TAG, "onFailure called");
-                }
-            });
-        }
     }
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
