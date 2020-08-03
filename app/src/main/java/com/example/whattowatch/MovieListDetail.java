@@ -26,6 +26,9 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -120,12 +123,12 @@ public class MovieListDetail extends AppCompatActivity {
             }
         });
 
-        getRecommendations();
+        getNewRecommendations();
 
     }
 
     private void getNewRecommendations() {
-        Map<Movie, Integer> recommendationScores = new HashMap<>();
+        final Map<Movie, Double> recommendationScores = new HashMap<>();
         Set<Movie> movieSetInList = new HashSet<>();
         for (Movie movie: movies){
             movieSetInList.add(movie);
@@ -139,8 +142,32 @@ public class MovieListDetail extends AppCompatActivity {
 
                     try {
                         JSONArray results = jsonObject.getJSONArray("results");
-                        Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
-                        movieRecs.add(movie);
+                        for (int i = 0; i < 20; i++){
+                            Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
+                            if (recommendationScores.containsKey(movie)){
+                                // if we have seen this movie before, change the score
+                                Double newScore = recommendationScores.get(movie) + 1 - .02*i;
+                                recommendationScores.put(movie, newScore);
+                            }
+                            else{
+                                recommendationScores.put(movie, 1 - .02*i);
+                            }
+                        }
+
+                        Comparator<Map.Entry<Movie, Double>> valueComparator = new Comparator<Map.Entry<Movie,Double>>() {
+                            @Override public int compare(Map.Entry<Movie, Double> e1, Map.Entry<Movie, Double> e2) {
+                                Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
+                            }
+                        };
+
+                        // Sort method needs a List, so let's first convert Set to List in Java
+                        List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
+                        Collections.sort(listOfEntries, valueComparator);
+                        movieRecs.clear();
+                        for (Map.Entry<Movie, Double> entry: listOfEntries){
+                            Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
+                            movieRecs.add(entry.getKey());
+                        }
                         movieRecAdapter.notifyDataSetChanged();
 
                     } catch (JSONException ex) {
@@ -157,6 +184,8 @@ public class MovieListDetail extends AppCompatActivity {
         }
 
     }
+
+
     private void getRecommendations() {
         for (Movie movie : movies) {
             client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
