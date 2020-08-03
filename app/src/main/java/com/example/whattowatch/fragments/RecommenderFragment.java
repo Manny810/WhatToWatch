@@ -172,5 +172,5 @@ public class RecommenderFragment extends Fragment {
             }
         });
     }
-    
+
 }
