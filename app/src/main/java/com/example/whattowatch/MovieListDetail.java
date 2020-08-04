@@ -26,8 +26,15 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Headers;
 
@@ -54,6 +61,7 @@ public class MovieListDetail extends AppCompatActivity {
     MovieList movieList;
     List<Movie> movies;
     List<Movie> movieRecs;
+    Set<Movie> moviesSet;
 
     RecommenderAdapter movieAdapter;
     RecommenderAdapter movieRecAdapter;
@@ -80,6 +88,11 @@ public class MovieListDetail extends AppCompatActivity {
 
         assert movieList != null;
         movies = movieList.getListOfMovies();
+        try {
+            moviesSet = movieList.getSetOfMovies();
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception", e);
+        }
         movieRecs = new ArrayList<>();
         movieAdapter = new RecommenderAdapter(this, movies);
         movieRecAdapter = new RecommenderAdapter(this, movieRecs);
@@ -121,6 +134,11 @@ public class MovieListDetail extends AppCompatActivity {
     }
 
     private void getRecommendations() {
+        final Map<Movie, Double> recommendationScores = new HashMap<>();
+        Set<Movie> movieSetInList = new HashSet<>();
+        for (Movie movie: movies){
+            movieSetInList.add(movie);
+        }
         for (Movie movie : movies) {
             client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
                 @Override
@@ -130,8 +148,33 @@ public class MovieListDetail extends AppCompatActivity {
 
                     try {
                         JSONArray results = jsonObject.getJSONArray("results");
-                        Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
-                        movieRecs.add(movie);
+                        for (int i = 0; i < 20; i++){
+                            Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
+                            if (!moviesSet.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
+                                if (recommendationScores.containsKey(movie)) {
+                                    // if we have seen this movie before, change the score
+                                    Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
+                                    recommendationScores.put(movie, newScore);
+                                } else {
+                                    recommendationScores.put(movie, 1 - .02 * i);
+                                }
+                            }
+                        }
+
+                        Comparator<Map.Entry<Movie, Double>> valueComparator = new Comparator<Map.Entry<Movie,Double>>() {
+                            @Override public int compare(Map.Entry<Movie, Double> e1, Map.Entry<Movie, Double> e2) {
+                                Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
+                            }
+                        };
+
+                        // Sort method needs a List, so let's first convert Set to List in Java
+                        List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
+                        Collections.sort(listOfEntries, valueComparator);
+                        movieRecs.clear();
+                        for (Map.Entry<Movie, Double> entry: listOfEntries){
+                            Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
+                            movieRecs.add(entry.getKey());
+                        }
                         movieRecAdapter.notifyDataSetChanged();
 
                     } catch (JSONException ex) {
@@ -146,6 +189,7 @@ public class MovieListDetail extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");

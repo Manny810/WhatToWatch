@@ -31,8 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Headers;
@@ -78,13 +82,14 @@ public class RecommenderFragment extends Fragment {
         // Set a layout Manager on the recycler view
         rvRecommendation.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        queryRecommendations();
+        queryNewRecommendations();
     }
 
 
-    protected void queryRecommendations() {
+    protected void queryNewRecommendations() {
+        final Map<Movie, Double> recommendationScores = new HashMap<>();
+
         // Specify which class to query
-        final Set<Movie> movieRecs = new HashSet<>();
         ParseQuery<MovieList> query = ParseQuery.getQuery(MovieList.class);
         query.include(MovieList.KEY_USER);
         query.whereEqualTo(MovieList.KEY_USER, ParseUser.getCurrentUser());
@@ -106,36 +111,66 @@ public class RecommenderFragment extends Fragment {
                     }
                 }
 
-                for (Movie movie: movies){
-                    client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, JSON json) {
-                            Log.d(TAG, "onSuccess");
-                            JSONObject jsonObject = json.jsonObject;
+                for (MovieList movieList: newMovieLists) {
+                    Log.d(TAG, "New Movie List: " + movieList.getTitle());
+                    for (Movie movie : movieList.getListOfMovies()) {
+                        client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.d(TAG, "onSuccess");
+                                JSONObject jsonObject = json.jsonObject;
 
-                            try {
-                                JSONArray results = jsonObject.getJSONArray("results");
-                                Movie movie = Movie.fromJsonObject(results.getJSONObject(0));
-                                if (!movieRecs.contains(movie)) {
-                                    movieRecs.add(movie);
-                                    movieRecommendations.add(movie);
+
+                                JSONArray results = null;
+                                try {
+                                    results = jsonObject.getJSONArray("results");
+                                    for (int i = 0; i < 20; i++) {
+                                        Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
+                                        if (!movies.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
+                                            if (recommendationScores.containsKey(movie)) {
+                                                // if we have seen this movie before, change the score
+                                                Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
+                                                recommendationScores.put(movie, newScore);
+                                            } else {
+                                                recommendationScores.put(movie, 1 - .02 * i);
+                                            }
+                                            Log.d(TAG, "movie added");
+                                        }
+                                    }
+
+                                    Comparator<Map.Entry<Movie, Double>> valueComparator = new Comparator<Map.Entry<Movie,Double>>() {
+                                        @Override public int compare(Map.Entry<Movie, Double> e1, Map.Entry<Movie, Double> e2) {
+                                            Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
+                                        }
+                                    };
+
+                                    // Sort method needs a List, so let's first convert Set to List in Java
+                                    List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
+                                    Log.d(TAG, "before");
+                                    Collections.sort(listOfEntries, valueComparator);
+                                    Log.d(TAG, "after");
+                                    movieRecommendations.clear();
+                                    for (Map.Entry<Movie, Double> entry: listOfEntries){
+                                        Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
+                                        movieRecommendations.add(entry.getKey());
+                                    }
                                     movieAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "data set changed");
+                                } catch (JSONException ex) {
+                                    Log.e(TAG, "Json Exception thrown", ex);
                                 }
-                            } catch (JSONException ex) {
-                                Log.e(TAG, "Hit Json Exception", ex);
                             }
 
-
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                            Log.e(TAG, "onFailure called");
-                        }
-                    });
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e(TAG, "onFailure called", throwable);
+                            }
+                        });
+                    }
                 }
 
             }
         });
     }
+
 }
