@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.whattowatch.MainActivity;
 import com.example.whattowatch.MovieDetailActivity;
 import com.example.whattowatch.MovieListDetail;
 import com.example.whattowatch.R;
@@ -129,7 +132,12 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                 Intent movieDetailIntent = new Intent(context, MovieDetailActivity.class);
                 movieDetailIntent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movies.get(position)));
                 Log.d(TAG, "MovieList being passed: " + movies.get(position));
-                context.startActivity(movieDetailIntent);
+                Pair<View, String> p1 = Pair.create((View) ivPoster, "moviePoster");
+                Pair<View, String> p2 = Pair.create((View) ivPoster, "moviePoster");
+                Activity myActivity = (Activity) context;
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, ivPoster, "moviePoster");
+
+                context.startActivity(movieDetailIntent, options.toBundle());
 
             }
         }
