@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -133,9 +133,9 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                 movieDetailIntent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movies.get(position)));
                 Log.d(TAG, "MovieList being passed: " + movies.get(position));
                 Pair<View, String> p1 = Pair.create((View) ivPoster, "moviePoster");
-                Pair<View, String> p2 = Pair.create((View) ivPoster, "moviePoster");
+                Pair<View, String> p2 = Pair.create((View) tvTitle, "movieTitle");
                 Activity myActivity = (Activity) context;
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, ivPoster, "moviePoster");
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, p1, p2);
 
                 context.startActivity(movieDetailIntent, options.toBundle());
 
