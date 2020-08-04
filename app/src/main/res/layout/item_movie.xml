@@ -6,11 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/cell_margin"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="#E6E6E6"
     card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="8dp">
+    card_view:cardElevation="8dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
 
     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
