@@ -68,29 +68,33 @@ public class NewMovieListActivity extends AppCompatActivity {
         btnFinishNewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
-                    setResult(RESULT_OK, returnIntent);
+                if (!etMovieListName.getText().toString().equals("")) {
+                    try {
+                        MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
+                        setResult(RESULT_OK, returnIntent);
 
-                    movieList.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null){
-                                Log.e(TAG, "Error while saving", e);
-                                Toast.makeText(NewMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                        movieList.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.e(TAG, "Error while saving", e);
+                                    Toast.makeText(NewMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.i(TAG, "Post save was successful!");
+                                etMovieListName.setText("");
+                                movies = new ArrayList<>();
+                                movieAdapter.notifyDataSetChanged();
+                                finish();
                             }
-                            Log.i(TAG, "Post save was successful!");
-                            etMovieListName.setText("");
-                            movies = new ArrayList<>();
-                            movieAdapter.notifyDataSetChanged();
-                            finish();
-                        }
-                    });
+                        });
 
-                } catch (JSONException e) {
-                    Log.e(TAG, "Json Exception Thrown", e);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Json Exception Thrown", e);
+                    }
+                } else {
+                    Toast.makeText(NewMovieListActivity.this, "You must title your movie list!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
