@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.palette.graphics.Palette;
 
 import android.content.Intent;
@@ -39,7 +41,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     // the view objects
     TextView tvTitle;
     TextView tvOverview;
-    //RatingBar rbVoteAverage;
+    RatingBar rbVoteAverage;
     ImageView ivPoster;
     CardView cvMovieDetail;
 
@@ -51,7 +53,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         // resolve the view objects
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvOverview = (TextView) findViewById(R.id.tvOverview);
-        //rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
+        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
         ivPoster = (ImageView) findViewById(R.id.ivPoster);
         cvMovieDetail = findViewById(R.id.cvMovieDetail);
 
@@ -64,8 +66,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         tvOverview.setText(movie.getDescription());
 
         // vote average is 0..10, convert to 0..5 by dividing by 2
-        //float voteAverage = movie.getVoteAverage().floatValue();
-        //rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+        float voteAverage = movie.getVoteAverage().floatValue();
+        rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
 
         // get image in movie details view
         String imageUrl;
@@ -97,7 +99,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                                     // Update the title TextView with the proper text color
                                     tvTitle.setTextColor(vibrant.getTitleTextColor());
                                     tvOverview.setTextColor(vibrant.getTitleTextColor());
-
+                                    DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor()); 
                                 }
                             }
                         });
