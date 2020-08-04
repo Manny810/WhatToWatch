@@ -121,7 +121,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             if (position != RecyclerView.NO_POSITION){
                 // TODO send the movie in position back to newMovieListActivity
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra(Movie.class.getSimpleName(), movies.get(position));
+                returnIntent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movies.get(position)));
                 if (context instanceof Activity) {
                     ((Activity) context).setResult(RESULT_OK, returnIntent);
                     ((Activity) context).finish();

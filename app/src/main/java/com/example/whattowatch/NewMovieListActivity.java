@@ -121,7 +121,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK){
             assert data != null;
-            Movie movie = (Movie) data.getParcelableExtra(Movie.class.getSimpleName());
+            Movie movie = (Movie) Parcels.unwrap(data.getParcelableExtra(Movie.class.getSimpleName()));
             movies.add(movie);
             movieAdapter.notifyDataSetChanged();
         }
