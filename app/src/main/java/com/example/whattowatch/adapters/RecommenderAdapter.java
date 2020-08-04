@@ -81,6 +81,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             ivPoster = itemView.findViewById(R.id.ivPoster);
             cvMovie = itemView.findViewById(R.id.cvMovie);
             itemView.setOnClickListener(this);
+
         }
 
         public void bind(Movie movie) {
