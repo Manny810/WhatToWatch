@@ -1,6 +1,7 @@
 package com.example.whattowatch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,6 @@ public class MovieListDetail extends AppCompatActivity {
     TextView tvListTitle;
     TextView tvListSize;
     TextView tvListCreatedAt;
-    TextView tvRecommendationSize;
     TextView tvRecyclerViewTitle;
     Button btnSwitchList;
 
@@ -76,7 +76,6 @@ public class MovieListDetail extends AppCompatActivity {
         tvListTitle = findViewById(R.id.tvListTitle);
         tvListSize = findViewById(R.id.tvListSize);
         tvListCreatedAt = findViewById(R.id.tvListCreatedAt);
-        tvRecommendationSize = findViewById(R.id.tvRecommendationSize);
         rvMovieListDetail = findViewById(R.id.rvMovieListDetail);
         rvMovieListRecommendations = findViewById(R.id.rvMovieListRecommendations);
         rvMovieListDetail.setVisibility(View.INVISIBLE);
@@ -128,6 +127,9 @@ public class MovieListDetail extends AppCompatActivity {
                 }
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         getRecommendations();
 
