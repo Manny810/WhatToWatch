@@ -27,12 +27,12 @@ public class Movie {
     Integer id;
     Double voteAverage;
 
-    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_DESCRIPTION = "overview";
     public static final String KEY_TITLE = "title";
-    public static final String KEY_POSTER_PATH = "posterPath";
-    public static final String KEY_BACKDROP_PATH = "backdropPath";
+    public static final String KEY_POSTER_PATH = "poster_path";
+    public static final String KEY_BACKDROP_PATH = "backdrop_path";
     public static final String KEY_ID = "id";
-    public static final String KEY_VOTE_AVERAGE = "voteAverage";
+    public static final String KEY_VOTE_AVERAGE = "vote_average";
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -71,12 +71,12 @@ public class Movie {
      */
     public static Movie fromJsonObject(JSONObject movie) throws JSONException {
         Movie new_movie = new Movie();
-        new_movie.setDescription(movie.getString("overview"));
-        new_movie.setTitle(movie.getString("title"));
-        new_movie.setPosterPath(movie.getString("poster_path"));
-        new_movie.setBackdropPath(movie.getString("backdrop_path"));
-        new_movie.setID(movie.getInt("id"));
-        new_movie.setVoteAverage(movie.getDouble("vote_average"));
+        new_movie.setDescription(movie.getString(KEY_DESCRIPTION));
+        new_movie.setTitle(movie.getString(KEY_TITLE));
+        new_movie.setPosterPath(movie.getString(KEY_POSTER_PATH));
+        new_movie.setBackdropPath(movie.getString(KEY_BACKDROP_PATH));
+        new_movie.setID(movie.getInt(KEY_ID));
+        new_movie.setVoteAverage(movie.getDouble(KEY_VOTE_AVERAGE));
 
 
         return new_movie;
