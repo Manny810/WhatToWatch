@@ -132,7 +132,7 @@ public class MovieListDetail extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         try {
-            movieList.getMovieListRecommendations(movieRecAdapter, movieRecs);
+            movieList.getMovieListRecommendations(movieRecAdapter, movieRecs, null, new HashSet<Movie>());
         } catch (JSONException e) {
             Log.e(TAG, "JSon exception", e);
         }

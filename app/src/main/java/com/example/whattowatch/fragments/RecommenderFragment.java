@@ -112,61 +112,12 @@ public class RecommenderFragment extends Fragment {
                 }
 
                 for (MovieList movieList: newMovieLists) {
-                    Log.d(TAG, "New Movie List: " + movieList.getTitle());
-                    for (Movie movie : movieList.getListOfMovies()) {
-                        client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                                Log.d(TAG, "onSuccess");
-                                JSONObject jsonObject = json.jsonObject;
-
-
-                                JSONArray results = null;
-                                try {
-                                    results = jsonObject.getJSONArray("results");
-                                    for (int i = 0; i < 20; i++) {
-                                        Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
-                                        if (!movies.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
-                                            if (recommendationScores.containsKey(movie)) {
-                                                // if we have seen this movie before, change the score
-                                                Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
-                                                recommendationScores.put(movie, newScore);
-                                            } else {
-                                                recommendationScores.put(movie, 1 - .02 * i);
-                                            }
-                                            Log.d(TAG, "movie added");
-                                        }
-                                    }
-
-                                    Comparator<Map.Entry<Movie, Double>> valueComparator = new Comparator<Map.Entry<Movie,Double>>() {
-                                        @Override public int compare(Map.Entry<Movie, Double> e1, Map.Entry<Movie, Double> e2) {
-                                            Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
-                                        }
-                                    };
-
-                                    // Sort method needs a List, so let's first convert Set to List in Java
-                                    List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
-                                    Log.d(TAG, "before");
-                                    Collections.sort(listOfEntries, valueComparator);
-                                    Log.d(TAG, "after");
-                                    movieRecommendations.clear();
-                                    for (Map.Entry<Movie, Double> entry: listOfEntries){
-                                        Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
-                                        movieRecommendations.add(entry.getKey());
-                                    }
-                                    movieAdapter.notifyDataSetChanged();
-                                    Log.d(TAG, "data set changed");
-                                } catch (JSONException ex) {
-                                    Log.e(TAG, "Json Exception thrown", ex);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                                Log.e(TAG, "onFailure called", throwable);
-                            }
-                        });
+                    try {
+                        recommendationScores.putAll(movieList.getMovieListRecommendations(movieAdapter, movieRecommendations, recommendationScores, movies));
+                    } catch (JSONException ex) {
+                        Log.e(TAG, "JsonException", ex);
                     }
+
                 }
 
             }
