@@ -27,6 +27,8 @@ public class Movie {
     Integer id;
     Double voteAverage;
 
+    public static final String imageURLHeader = "https://image.tmdb.org/t/p/w342/%s";
+
     public static final String KEY_DESCRIPTION = "overview";
     public static final String KEY_TITLE = "title";
     public static final String KEY_POSTER_PATH = "poster_path";
@@ -114,7 +116,7 @@ public class Movie {
         this.title = title;
     }
 
-    public String getPosterPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", posterPath); }
+    public String getPosterPath(){ return String.format(imageURLHeader, posterPath); }
 
     public String getPosterPathKey(){ return posterPath; }
 
@@ -122,7 +124,7 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public String getBackdropPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", backdropPath); }
+    public String getBackdropPath(){ return String.format(imageURLHeader, backdropPath); }
 
     public String getBackdropPathKey(){ return backdropPath; }
 
