@@ -131,16 +131,17 @@ public class MovieListDetail extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getRecommendations();
+        try {
+            movieList.getMovieListRecommendations(movieRecAdapter, movieRecs);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSon exception", e);
+        }
 
     }
 
     private void getRecommendations() {
         final Map<Movie, Double> recommendationScores = new HashMap<>();
-        Set<Movie> movieSetInList = new HashSet<>();
-        for (Movie movie: movies){
-            movieSetInList.add(movie);
-        }
+
         for (Movie movie : movies) {
             client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
                 @Override
