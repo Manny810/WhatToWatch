@@ -66,8 +66,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         tvOverview.setText(movie.getDescription());
 
         // vote average is 0..10, convert to 0..5 by dividing by 2
-        float voteAverage = movie.getVoteAverage().floatValue();
-        rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+        if (movie.getVoteAverage() != null) {
+            float voteAverage = movie.getVoteAverage().floatValue();
+            rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+        }
 
         // get image in movie details view
         String imageUrl;
@@ -99,7 +101,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                                     // Update the title TextView with the proper text color
                                     tvTitle.setTextColor(vibrant.getTitleTextColor());
                                     tvOverview.setTextColor(vibrant.getTitleTextColor());
-                                    DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor()); 
+                                    DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor());
                                 }
                             }
                         });

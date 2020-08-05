@@ -82,6 +82,7 @@ public class MovieList extends ParseObject {
             newMovie.setPosterPath(jsonArray.getJSONObject(i).getString(Movie.KEY_POSTER_PATH));
             newMovie.setBackdropPath(jsonArray.getJSONObject(i).getString(Movie.KEY_BACKDROP_PATH));
             newMovie.setID(jsonArray.getJSONObject(i).getInt(Movie.KEY_ID));
+            newMovie.setVoteAverage(jsonArray.getJSONObject(i).getDouble(Movie.KEY_VOTE_AVERAGE));
 
             movies.add(newMovie);
         }
