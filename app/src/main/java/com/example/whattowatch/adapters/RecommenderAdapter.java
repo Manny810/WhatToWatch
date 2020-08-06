@@ -3,6 +3,7 @@ package com.example.whattowatch.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -91,9 +94,23 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
 
+            // get image in movie details view
+            String imageUrl;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // if phone is in landscape
+                imageUrl = movie.getBackdropPath();
+            } else {
+                // if phone is in portrait
+                imageUrl = movie.getPosterPath();
+            }
+
+            int radius = 3;
+            int margin = 1;
+
             Glide.with(context)
                     .asBitmap()
-                    .load(movie.getPosterPath())
+                    .load(imageUrl)
+                    .transform(new RoundedCornersTransformation(radius, margin))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
