@@ -30,6 +30,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -47,6 +48,7 @@ public class EditMovieListActivity extends AppCompatActivity {
     RecyclerView rvEditMovieList;
     EditText etEditMovieListName;
     List<Movie> movies;
+    Set<Movie> movieSet;
     RecommenderAdapter movieAdapter;
 
     @Override
@@ -72,6 +74,11 @@ public class EditMovieListActivity extends AppCompatActivity {
         etEditMovieListName.setText(movieList.getTitle());
         assert movieList != null;
         movies = movieList.getListOfMovies();
+        try {
+            movieSet = movieList.getSetOfMovies();
+        } catch (JSONException e) {
+            Log.e(TAG, "Json exception", e);
+        }
 
         movieAdapter = new RecommenderAdapter(this, movies);
         // set the adapter as the recycler view adapter
@@ -115,6 +122,7 @@ public class EditMovieListActivity extends AppCompatActivity {
 
                 // delete movie list
                 movies.remove(adapterPosition);
+                movieSet.remove(movies.get(adapterPosition));
                 movieAdapter.notifyDataSetChanged();
 
             }
@@ -156,8 +164,13 @@ public class EditMovieListActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
             assert data != null;
             Movie movie = (Movie) Parcels.unwrap(data.getParcelableExtra(Movie.class.getSimpleName()));
-            movies.add(movie);
-            movieAdapter.notifyDataSetChanged();
+            if (movieSet.contains(movie)){
+                Toast.makeText(EditMovieListActivity.this, "Movie already is in the Movie List!", Toast.LENGTH_SHORT).show();
+            } else {
+                movies.add(movie);
+                movieSet.add(movie);
+                movieAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

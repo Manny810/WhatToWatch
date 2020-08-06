@@ -28,7 +28,9 @@ import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NewMovieListActivity extends AppCompatActivity {
 
@@ -42,6 +44,7 @@ public class NewMovieListActivity extends AppCompatActivity {
     RecyclerView rvMovieList;
     EditText etMovieListName;
     List<Movie> movies;
+    Set<Movie> movieSet;
     RecommenderAdapter movieAdapter;
 
 
@@ -56,6 +59,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         etMovieListName = findViewById(R.id.etMovieListName);
 
         movies = new ArrayList<>();
+        movieSet = new HashSet<>(); 
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +126,13 @@ public class NewMovieListActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK){
             assert data != null;
             Movie movie = (Movie) Parcels.unwrap(data.getParcelableExtra(Movie.class.getSimpleName()));
-            movies.add(movie);
-            movieAdapter.notifyDataSetChanged();
+            if (movieSet.contains(movie)){
+                Toast.makeText(NewMovieListActivity.this, "Movie already is in the Movie List!", Toast.LENGTH_SHORT).show();
+            } else {
+                movies.add(movie);
+                movieSet.add(movie);
+                movieAdapter.notifyDataSetChanged();
+            }
         }
     }
 }
