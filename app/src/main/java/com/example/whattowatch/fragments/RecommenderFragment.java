@@ -44,8 +44,6 @@ import okhttp3.Headers;
 
 public class RecommenderFragment extends Fragment {
     public static final String TAG = "RecommenderFragment";
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/%s/recommendations?api_key=557bf444fa647aa33e0e1a2de0317f55&language=en-US&page=1";
-
 
     RecyclerView rvRecommendation;
 
