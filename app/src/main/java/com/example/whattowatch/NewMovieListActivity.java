@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.adapters.RecommenderAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -59,7 +56,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         etMovieListName = findViewById(R.id.etMovieListName);
 
         movies = new ArrayList<>();
-        movieSet = new HashSet<>(); 
+        movieSet = new HashSet<>();
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
             @Override
