@@ -85,8 +85,6 @@ public class RecommenderFragment extends Fragment {
 
 
     protected void queryNewRecommendations() {
-        final Map<Movie, Double> recommendationScores = new HashMap<>();
-
         // Specify which class to query
         ParseQuery<MovieList> query = ParseQuery.getQuery(MovieList.class);
         query.include(MovieList.KEY_USER);
@@ -109,14 +107,12 @@ public class RecommenderFragment extends Fragment {
                     }
                 }
 
-                for (MovieList movieList: newMovieLists) {
-                    try {
-                        recommendationScores.putAll(movieList.getMovieListRecommendations(movieAdapter, movieRecommendations, recommendationScores, movies));
-                    } catch (JSONException ex) {
-                        Log.e(TAG, "JsonException", ex);
-                    }
-
+                try {
+                    MovieList.getNewMovieListRecommendations(movieAdapter, movieRecommendations, movies);
+                } catch (JSONException ex) {
+                    Log.e(TAG, "JSon Exception", ex);
                 }
+
 
             }
         });

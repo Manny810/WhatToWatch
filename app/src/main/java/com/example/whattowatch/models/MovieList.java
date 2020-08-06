@@ -120,17 +120,11 @@ public class MovieList extends ParseObject {
         return movies;
     }
 
-    public Map<Movie, Double> getMovieListRecommendations(final RecyclerView.Adapter adapter, final List<Movie> recyclerViewList, final Map<Movie, Double> scores, final Set<Movie> forbiddenMovies) throws JSONException {
+    public static void getNewMovieListRecommendations(final RecyclerView.Adapter adapter, final List<Movie> recyclerViewList, final Set<Movie> movies) throws JSONException {
         AsyncHttpClient client = new AsyncHttpClient();
 
-        final Map<Movie, Double> recommendationScores;
-        if (scores == null){
-            recommendationScores = new HashMap<>();
-        } else {
-            recommendationScores = scores;
-        }
+        final Map<Movie, Double> recommendationScores = new HashMap<>();
 
-        final Set<Movie> movies = getSetOfMovies();
 
         for (Movie movie : movies) {
             client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
@@ -143,7 +137,7 @@ public class MovieList extends ParseObject {
                         JSONArray results = jsonObject.getJSONArray("results");
                         for (int i = 0; i < 20; i++){
                             Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
-                            if (!movies.contains(movie) && !forbiddenMovies.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
+                            if (!movies.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
                                 if (recommendationScores.containsKey(movie)) {
                                     // if we have seen this movie before, change the score
                                     Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
@@ -183,6 +177,5 @@ public class MovieList extends ParseObject {
                 }
             });
         }
-        return recommendationScores;
     }
 }
