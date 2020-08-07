@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.Rating;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +71,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
         private TextView tvOverview;
         private ImageView ivPoster;
         private CardView cvMovie;
+        private RatingBar rbVoteAverage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,12 +79,20 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
             cvMovie = itemView.findViewById(R.id.cvMovie);
+            rbVoteAverage = itemView.findViewById(R.id.rbVoteAverage);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
+
+            // vote average is 0..10, convert to 0..5 by dividing by 2
+            if (movie.getVoteAverage() != null) {
+                float voteAverage = movie.getVoteAverage().floatValue();
+                rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+            }
+
             Glide.with(context)
                     .asBitmap()
                     .load(movie.getPosterPath())
@@ -99,7 +111,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
                                         // Update the title TextView with the proper text color
                                         tvTitle.setTextColor(vibrant.getTitleTextColor());
                                         tvOverview.setTextColor(vibrant.getTitleTextColor());
-
+                                        DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor());
                                     }
                                 }
                             });

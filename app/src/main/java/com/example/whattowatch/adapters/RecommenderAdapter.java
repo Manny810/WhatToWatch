@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pair;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,6 +80,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
         private TextView tvTitle;
         private TextView tvOverview;
         private ImageView ivPoster;
+        private RatingBar rbVoteAverage;
         private CardView cvMovie;
 
         public ViewHolder(@NonNull View itemView) {
@@ -85,6 +88,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            rbVoteAverage = itemView.findViewById(R.id.rbVoteAverage);
             cvMovie = itemView.findViewById(R.id.cvMovie);
             itemView.setOnClickListener(this);
 
@@ -102,6 +106,12 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             } else {
                 // if phone is in portrait
                 imageUrl = movie.getPosterPath();
+            }
+
+            // vote average is 0..10, convert to 0..5 by dividing by 2
+            if (movie.getVoteAverage() != null) {
+                float voteAverage = movie.getVoteAverage().floatValue();
+                rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
             }
 
             int radius = 3;
@@ -126,7 +136,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                                         // Update the title TextView with the proper text color
                                         tvTitle.setTextColor(vibrant.getTitleTextColor());
                                         tvOverview.setTextColor(vibrant.getTitleTextColor());
-
+                                        DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor());
                                     }
                                 }
                             });
