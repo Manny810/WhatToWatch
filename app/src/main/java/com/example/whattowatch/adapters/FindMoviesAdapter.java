@@ -3,6 +3,7 @@ package com.example.whattowatch.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.Rating;
@@ -87,6 +88,16 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
 
+            // get image in movie details view
+            String imageUrl;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // if phone is in landscape
+                imageUrl = movie.getBackdropPath();
+            } else {
+                // if phone is in portrait
+                imageUrl = movie.getPosterPath();
+            }
+
             // vote average is 0..10, convert to 0..5 by dividing by 2
             if (movie.getVoteAverage() != null) {
                 float voteAverage = movie.getVoteAverage().floatValue();
@@ -95,7 +106,7 @@ public class FindMoviesAdapter extends RecyclerView.Adapter<FindMoviesAdapter.Vi
 
             Glide.with(context)
                     .asBitmap()
-                    .load(movie.getPosterPath())
+                    .load(imageUrl)
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

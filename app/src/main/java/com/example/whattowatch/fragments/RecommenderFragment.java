@@ -109,6 +109,7 @@ public class RecommenderFragment extends Fragment {
 
                 try {
                     MovieList.getNewMovieListRecommendations(movieAdapter, movieRecommendations, movies);
+                    movieAdapter.notifyDataSetChanged();
                 } catch (JSONException ex) {
                     Log.e(TAG, "JSon Exception", ex);
                 }
