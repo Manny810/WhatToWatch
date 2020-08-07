@@ -51,10 +51,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         // resolve the view objects
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvOverview = (TextView) findViewById(R.id.tvOverview);
-        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
-        ivPoster = (ImageView) findViewById(R.id.ivPoster);
+        tvTitle = (TextView) findViewById(R.id.tvTitleDetail);
+        tvOverview = (TextView) findViewById(R.id.tvOverviewDetail);
+        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverageDetail);
+        ivPoster = (ImageView) findViewById(R.id.ivPosterDetail);
         cvMovieDetail = findViewById(R.id.cvMovieDetail);
 
         // unwrap the movie passed in via intent, using its simple name as a key

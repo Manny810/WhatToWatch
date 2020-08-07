@@ -11,7 +11,8 @@
     card_view:cardBackgroundColor="#E6E6E6"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp"
-    tools:context=".MovieDetailActivity">
+    tools:context=".MovieDetailActivity"
+    android:focusable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,54 +20,45 @@
 
 
         <ImageView
-            android:id="@+id/ivPoster"
+            android:id="@+id/ivPosterDetail"
             android:transitionName="moviePoster"
             android:layout_width="match_parent"
             android:layout_height="512dp"
-            android:layout_below="@+id/tvOverview"
+            android:layout_below="@+id/tvOverviewDetail"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tvTitle"
-            android:transitionName="movieTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTitleDetail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Movie Title"
             android:textAppearance="@android:style/TextAppearance.Large"
-            />
+            android:transitionName="movieTitle"
+            tools:text="Movie Title" />
 
         <TextView
-            android:id="@+id/tvOverview"
-            android:transitionName="movieOverview"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvOverviewDetail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rbVoteAverage"
+            android:layout_below="@+id/rbVoteAverageDetail"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="TextView"
-             />
+            android:transitionName="movieOverview"
+            tools:text="Text View" />
 
         <RatingBar
-            android:id="@+id/rbVoteAverage"
-            android:transitionName="movieRating"
+            android:id="@+id/rbVoteAverageDetail"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTitle"
+            android:layout_below="@+id/tvTitleDetail"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:numStars="5"
-            android:stepSize="0.5" />
+            android:stepSize="0.5"
+            android:transitionName="movieRating" />
 
 
 
