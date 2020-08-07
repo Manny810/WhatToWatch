@@ -114,13 +114,9 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                 rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
             }
 
-            int radius = 3;
-            int margin = 1;
-
             Glide.with(context)
                     .asBitmap()
                     .load(imageUrl)
-                    .transform(new RoundedCornersTransformation(radius, margin))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

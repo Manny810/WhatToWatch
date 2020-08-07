@@ -159,9 +159,13 @@ public class MovieList extends ParseObject {
                         List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
                         Collections.sort(listOfEntries, valueComparator);
                         recyclerViewList.clear();
+                        adapter.notifyDataSetChanged();
+
                         for (Map.Entry<Movie, Double> entry: listOfEntries){
                             Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
                             recyclerViewList.add(entry.getKey());
+                            adapter.notifyDataSetChanged();
+
                         }
                         adapter.notifyDataSetChanged();
 
