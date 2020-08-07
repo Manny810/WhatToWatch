@@ -14,7 +14,6 @@
     tools:context=".MovieDetailActivity">
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -46,6 +45,7 @@
 
         <TextView
             android:id="@+id/tvOverview"
+            android:transitionName="movieOverview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rbVoteAverage"
@@ -58,6 +58,7 @@
 
         <RatingBar
             android:id="@+id/rbVoteAverage"
+            android:transitionName="movieRating"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

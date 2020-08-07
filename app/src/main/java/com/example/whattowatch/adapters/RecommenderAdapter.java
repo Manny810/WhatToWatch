@@ -161,8 +161,10 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                 Log.d(TAG, "MovieList being passed: " + movies.get(position));
                 Pair<View, String> p1 = Pair.create((View) ivPoster, "moviePoster");
                 Pair<View, String> p2 = Pair.create((View) tvTitle, "movieTitle");
+                Pair<View, String> p3 = Pair.create((View) rbVoteAverage, "movieRating");
+                Pair<View, String> p4 = Pair.create((View) tvOverview, "movieOverview");
                 Activity myActivity = (Activity) context;
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, p1, p2);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, p1, p2, p3, p4);
 
                 context.startActivity(movieDetailIntent, options.toBundle());
 
