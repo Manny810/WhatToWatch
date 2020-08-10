@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -113,7 +115,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 Intent movieListIntent = new Intent(context, MovieListDetail.class);
                 movieListIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieLists.get(position)));
                 Log.d(TAG, "MovieList being passed: " + movieLists.get(position));
-                context.startActivity(movieListIntent);
+                Pair<View, String> p1 = Pair.create((View) tvMovieListTitle, "movieListTitle");
+                Pair<View, String> p2 = Pair.create((View) tvMovieListSize, "movieListSize");
+                Pair<View, String> p3 = Pair.create((View) tvMovieListCreatedAt, "movieListCreated");
+                Activity myActivity = (Activity) context;
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, p1, p2, p3);
+                context.startActivity(movieListIntent, options.toBundle());
 
             }
         }

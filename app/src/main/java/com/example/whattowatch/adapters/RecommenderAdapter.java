@@ -3,6 +3,7 @@ package com.example.whattowatch.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -11,17 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.Pair;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.whattowatch.MainActivity;
 import com.example.whattowatch.MovieDetailActivity;
 import com.example.whattowatch.MovieListDetail;
 import com.example.whattowatch.R;
@@ -34,6 +40,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -72,6 +80,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
         private TextView tvTitle;
         private TextView tvOverview;
         private ImageView ivPoster;
+        private RatingBar rbVoteAverage;
         private CardView cvMovie;
 
         public ViewHolder(@NonNull View itemView) {
@@ -79,17 +88,35 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            rbVoteAverage = itemView.findViewById(R.id.rbVoteAverage);
             cvMovie = itemView.findViewById(R.id.cvMovie);
             itemView.setOnClickListener(this);
+
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getDescription());
 
+            // get image in movie details view
+            String imageUrl;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // if phone is in landscape
+                imageUrl = movie.getBackdropPath();
+            } else {
+                // if phone is in portrait
+                imageUrl = movie.getPosterPath();
+            }
+
+            // vote average is 0..10, convert to 0..5 by dividing by 2
+            if (movie.getVoteAverage() != null) {
+                float voteAverage = movie.getVoteAverage().floatValue();
+                rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
+            }
+
             Glide.with(context)
                     .asBitmap()
-                    .load(movie.getPosterPath())
+                    .load(imageUrl)
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -105,7 +132,7 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                                         // Update the title TextView with the proper text color
                                         tvTitle.setTextColor(vibrant.getTitleTextColor());
                                         tvOverview.setTextColor(vibrant.getTitleTextColor());
-
+                                        DrawableCompat.setTint(rbVoteAverage.getProgressDrawable(), vibrant.getTitleTextColor());
                                     }
                                 }
                             });
@@ -128,7 +155,14 @@ public class RecommenderAdapter extends RecyclerView.Adapter<RecommenderAdapter.
                 Intent movieDetailIntent = new Intent(context, MovieDetailActivity.class);
                 movieDetailIntent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movies.get(position)));
                 Log.d(TAG, "MovieList being passed: " + movies.get(position));
-                context.startActivity(movieDetailIntent);
+                Pair<View, String> p1 = Pair.create((View) ivPoster, "moviePoster");
+                Pair<View, String> p2 = Pair.create((View) tvTitle, "movieTitle");
+                Pair<View, String> p3 = Pair.create((View) rbVoteAverage, "movieRating");
+                Pair<View, String> p4 = Pair.create((View) tvOverview, "movieOverview");
+                Activity myActivity = (Activity) context;
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(myActivity, p1, p2, p3, p4);
+
+                context.startActivity(movieDetailIntent, options.toBundle());
 
             }
         }

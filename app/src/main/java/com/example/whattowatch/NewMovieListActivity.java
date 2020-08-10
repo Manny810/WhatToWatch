@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.adapters.RecommenderAdapter;
 import com.example.whattowatch.models.Movie;
 import com.example.whattowatch.models.MovieList;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -28,7 +25,9 @@ import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NewMovieListActivity extends AppCompatActivity {
 
@@ -42,6 +41,7 @@ public class NewMovieListActivity extends AppCompatActivity {
     RecyclerView rvMovieList;
     EditText etMovieListName;
     List<Movie> movies;
+    Set<Movie> movieSet;
     RecommenderAdapter movieAdapter;
 
 
@@ -56,6 +56,7 @@ public class NewMovieListActivity extends AppCompatActivity {
         etMovieListName = findViewById(R.id.etMovieListName);
 
         movies = new ArrayList<>();
+        movieSet = new HashSet<>();
 
         btnFindMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,29 +69,33 @@ public class NewMovieListActivity extends AppCompatActivity {
         btnFinishNewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
-                    setResult(RESULT_OK, returnIntent);
+                if (!etMovieListName.getText().toString().equals("")) {
+                    try {
+                        MovieList movieList = MovieList.movieListMaker(ParseUser.getCurrentUser(), etMovieListName.getText().toString(), movies);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra(MovieList.class.getSimpleName(), Parcels.wrap(movieList));
+                        setResult(RESULT_OK, returnIntent);
 
-                    movieList.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null){
-                                Log.e(TAG, "Error while saving", e);
-                                Toast.makeText(NewMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                        movieList.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.e(TAG, "Error while saving", e);
+                                    Toast.makeText(NewMovieListActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.i(TAG, "Post save was successful!");
+                                etMovieListName.setText("");
+                                movies = new ArrayList<>();
+                                movieAdapter.notifyDataSetChanged();
+                                finish();
                             }
-                            Log.i(TAG, "Post save was successful!");
-                            etMovieListName.setText("");
-                            movies = new ArrayList<>();
-                            movieAdapter.notifyDataSetChanged();
-                            finish();
-                        }
-                    });
+                        });
 
-                } catch (JSONException e) {
-                    Log.e(TAG, "Json Exception Thrown", e);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Json Exception Thrown", e);
+                    }
+                } else {
+                    Toast.makeText(NewMovieListActivity.this, "You must title your movie list!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,9 +122,14 @@ public class NewMovieListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK){
             assert data != null;
-            Movie movie = (Movie) data.getParcelableExtra(Movie.class.getSimpleName());
-            movies.add(movie);
-            movieAdapter.notifyDataSetChanged();
+            Movie movie = (Movie) Parcels.unwrap(data.getParcelableExtra(Movie.class.getSimpleName()));
+            if (movieSet.contains(movie)){
+                Toast.makeText(NewMovieListActivity.this, "Movie already is in the Movie List!", Toast.LENGTH_SHORT).show();
+            } else {
+                movies.add(movie);
+                movieSet.add(movie);
+                movieAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

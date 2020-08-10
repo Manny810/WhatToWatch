@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/tvMovieListTitle"
+            android:transitionName="movieListTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -32,6 +33,7 @@
 
         <TextView
             android:id="@+id/tvMovieListSize"
+            android:transitionName="movieListSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMovieListTitle"
@@ -42,6 +44,7 @@
 
         <TextView
             android:id="@+id/tvMovieListCreatedAt"
+            android:transitionName="movieListCreated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMovieListTitle"

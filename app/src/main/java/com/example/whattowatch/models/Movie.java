@@ -8,33 +8,33 @@ import com.parse.ParseObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@ParseClassName("Movie")
-public class Movie extends ParseObject {
+@Parcel
+public class Movie {
 
-    public static final String KEY_DESCRIPTION = "description";
+    public Movie() {}
+
+    String description;
+    String title;
+    String posterPath;
+    String backdropPath;
+    Integer id;
+    Double voteAverage;
+
+    public static final String imageURLHeader = "https://image.tmdb.org/t/p/w342/%s";
+
+    public static final String KEY_DESCRIPTION = "overview";
     public static final String KEY_TITLE = "title";
-    public static final String KEY_POSTER_PATH = "posterPath";
-    public static final String KEY_BACKDROP_PATH = "backdropPath";
+    public static final String KEY_POSTER_PATH = "poster_path";
+    public static final String KEY_BACKDROP_PATH = "backdrop_path";
     public static final String KEY_ID = "id";
-
-    /**
-     * fromJsonArray is a movie producer that produces a list a movies from a JSONArray.
-     * The JSONArray must be from MovieDatabaseAPI, and must be an array of JSONObjects that represent movies
-     */
-    public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
-        List<Movie> movies = new ArrayList<>();
-
-        for (int i = 0; i < movieJsonArray.length(); i++){
-            movies.add(fromJsonObject(movieJsonArray.getJSONObject(i)));
-        }
-        return movies;
-    }
+    public static final String KEY_VOTE_AVERAGE = "vote_average";
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -53,6 +53,19 @@ public class Movie extends ParseObject {
     }
 
     /**
+     * fromJsonArray is a movie producer that produces a list a movies from a JSONArray.
+     * The JSONArray must be from MovieDatabaseAPI, and must be an array of JSONObjects that represent movies
+     */
+    public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
+        List<Movie> movies = new ArrayList<>();
+
+        for (int i = 0; i < movieJsonArray.length(); i++){
+            movies.add(fromJsonObject(movieJsonArray.getJSONObject(i)));
+        }
+        return movies;
+    }
+
+    /**
      *
      * @param movie a JSONObject from MovieDatabaseApi that represents a movie
      * @return an instance of Movie
@@ -60,11 +73,13 @@ public class Movie extends ParseObject {
      */
     public static Movie fromJsonObject(JSONObject movie) throws JSONException {
         Movie new_movie = new Movie();
-        new_movie.setDescription(movie.getString("overview"));
-        new_movie.setTitle(movie.getString("title"));
-        new_movie.setPosterPath(movie.getString("poster_path"));
-        new_movie.setBackdropPath(movie.getString("backdrop_path"));
-        new_movie.setID(movie.getInt("id"));
+        new_movie.setDescription(movie.getString(KEY_DESCRIPTION));
+        new_movie.setTitle(movie.getString(KEY_TITLE));
+        new_movie.setPosterPath(movie.getString(KEY_POSTER_PATH));
+        new_movie.setBackdropPath(movie.getString(KEY_BACKDROP_PATH));
+        new_movie.setID(movie.getInt(KEY_ID));
+        new_movie.setVoteAverage(movie.getDouble(KEY_VOTE_AVERAGE));
+
 
         return new_movie;
     }
@@ -81,46 +96,52 @@ public class Movie extends ParseObject {
         json.put(KEY_POSTER_PATH, getPosterPathKey());
         json.put(KEY_BACKDROP_PATH, getBackdropPathKey());
         json.put(KEY_ID, getID());
+        json.put(KEY_VOTE_AVERAGE, getVoteAverage());
         return json;
     }
 
     public String getDescription(){
-        return getString(KEY_DESCRIPTION);
+        return this.description;
     }
 
     public void setDescription(String description){
-        put(KEY_DESCRIPTION, description);
+        this.description = description;
     }
 
     public String getTitle(){
-        return getString(KEY_TITLE);
+        return this.title;
     }
 
     public void setTitle(String title){
-        put(KEY_TITLE, title);
+        this.title = title;
     }
 
-    public String getPosterPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_POSTER_PATH)); }
+    public String getPosterPath(){ return String.format(imageURLHeader, posterPath); }
 
-    public String getPosterPathKey(){ return getString(KEY_POSTER_PATH); }
+    public String getPosterPathKey(){ return posterPath; }
 
     public void setPosterPath(String posterPath){
-        put(KEY_POSTER_PATH, posterPath);
+        this.posterPath = posterPath;
     }
 
-    public String getBackdropPath(){ return String.format("https://image.tmdb.org/t/p/w342/%s", getString(KEY_BACKDROP_PATH)); }
+    public String getBackdropPath(){ return String.format(imageURLHeader, backdropPath); }
 
-    public String getBackdropPathKey(){ return getString(KEY_BACKDROP_PATH); }
+    public String getBackdropPathKey(){ return backdropPath; }
 
     public void setBackdropPath(String backdropPath){
-        put(KEY_BACKDROP_PATH, backdropPath);
+        this.backdropPath = backdropPath;
     }
 
-    public Number getID(){
-        return getNumber(KEY_ID);
+    public Integer getID(){
+        return id;
     }
 
-    public void setID(Number id){
-        put(KEY_ID, id);
+    public void setID(Integer id){
+        this.id = id;
     }
+
+    public Double getVoteAverage() { return voteAverage; }
+
+    public void setVoteAverage(Double voteAverage) { this.voteAverage = voteAverage; }
+
 }

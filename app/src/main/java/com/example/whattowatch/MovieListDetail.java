@@ -1,6 +1,7 @@
 package com.example.whattowatch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,6 @@ public class MovieListDetail extends AppCompatActivity {
     TextView tvListTitle;
     TextView tvListSize;
     TextView tvListCreatedAt;
-    TextView tvRecommendationSize;
     TextView tvRecyclerViewTitle;
     Button btnSwitchList;
 
@@ -76,7 +76,6 @@ public class MovieListDetail extends AppCompatActivity {
         tvListTitle = findViewById(R.id.tvListTitle);
         tvListSize = findViewById(R.id.tvListSize);
         tvListCreatedAt = findViewById(R.id.tvListCreatedAt);
-        tvRecommendationSize = findViewById(R.id.tvRecommendationSize);
         rvMovieListDetail = findViewById(R.id.rvMovieListDetail);
         rvMovieListRecommendations = findViewById(R.id.rvMovieListRecommendations);
         rvMovieListDetail.setVisibility(View.INVISIBLE);
@@ -129,65 +128,13 @@ public class MovieListDetail extends AppCompatActivity {
             }
         });
 
-        getRecommendations();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    }
-
-    private void getRecommendations() {
-        final Map<Movie, Double> recommendationScores = new HashMap<>();
-        Set<Movie> movieSetInList = new HashSet<>();
-        for (Movie movie: movies){
-            movieSetInList.add(movie);
-        }
-        for (Movie movie : movies) {
-            client.get(String.format(NOW_PLAYING_URL, movie.getID()), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.d(TAG, "onSuccess");
-                    JSONObject jsonObject = json.jsonObject;
-
-                    try {
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        for (int i = 0; i < 20; i++){
-                            Movie movie = Movie.fromJsonObject(results.getJSONObject(i));
-                            if (!moviesSet.contains(movie)) { // checking to see if the recommended movie is already in our movieList so we don't add it
-                                if (recommendationScores.containsKey(movie)) {
-                                    // if we have seen this movie before, change the score
-                                    Double newScore = recommendationScores.get(movie) + 1 - .02 * i;
-                                    recommendationScores.put(movie, newScore);
-                                } else {
-                                    recommendationScores.put(movie, 1 - .02 * i);
-                                }
-                            }
-                        }
-
-                        Comparator<Map.Entry<Movie, Double>> valueComparator = new Comparator<Map.Entry<Movie,Double>>() {
-                            @Override public int compare(Map.Entry<Movie, Double> e1, Map.Entry<Movie, Double> e2) {
-                                Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
-                            }
-                        };
-
-                        // Sort method needs a List, so let's first convert Set to List in Java
-                        List<Map.Entry<Movie, Double>> listOfEntries = new ArrayList<Map.Entry<Movie, Double>>(recommendationScores.entrySet()); // sorting HashMap by values using comparator Collections.sort(listOfEntries, valueComparator);
-                        Collections.sort(listOfEntries, valueComparator);
-                        movieRecs.clear();
-                        for (Map.Entry<Movie, Double> entry: listOfEntries){
-                            Log.d(TAG, "Movie: " + entry.getKey().getTitle() + ", Value: " + entry.getValue());
-                            movieRecs.add(entry.getKey());
-                        }
-                        movieRecAdapter.notifyDataSetChanged();
-
-                    } catch (JSONException ex) {
-                        Log.e(TAG, "Hit Json Exception", ex);
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                    Log.e(TAG, "onFailure called");
-                }
-            });
+        try {
+            MovieList.getNewMovieListRecommendations(movieRecAdapter, movieRecs, movieList.getSetOfMovies());
+        } catch (JSONException e) {
+            Log.e(TAG, "JSon exception", e);
         }
 
     }

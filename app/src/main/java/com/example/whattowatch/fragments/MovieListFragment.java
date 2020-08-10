@@ -18,12 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.whattowatch.CameraActivity;
 import com.example.whattowatch.EditMovieListActivity;
 import com.example.whattowatch.NewMovieListActivity;
 import com.example.whattowatch.R;
 import com.example.whattowatch.adapters.MovieListAdapter;
-import com.example.whattowatch.adapters.NewMovieListAdapter;
 import com.example.whattowatch.models.MovieList;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -35,7 +33,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
