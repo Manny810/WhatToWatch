@@ -121,8 +121,8 @@ public class EditMovieListActivity extends AppCompatActivity {
                 final int adapterPosition = viewHolder.getAdapterPosition();
 
                 // delete movie list
-                movies.remove(adapterPosition);
                 movieSet.remove(movies.get(adapterPosition));
+                movies.remove(adapterPosition);
                 movieAdapter.notifyDataSetChanged();
 
             }
